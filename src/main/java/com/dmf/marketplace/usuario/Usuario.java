@@ -7,11 +7,10 @@ import org.springframework.util.Assert;
 import java.time.Instant;
 import java.util.Objects;
 
+//1
 @Entity
 @Table(name = "tb_usuario")
 public class Usuario {
-
-    private static final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Id
     @GeneratedValue
@@ -24,16 +23,17 @@ public class Usuario {
     @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME(6)")
     private Instant createdAt;
 
-    public Usuario(String login, String senha) {
+    //1
+    public Usuario(String login, SenhaLimpa senha) {
         Assert.hasText(login, "login é obrigatório");
-        Assert.hasText(senha, "senha é obrigatória");
+        Assert.notNull(senha, "o objeto do tipo SenhaLimpa não pode ser nulo");
 
         this.login = login;
-        this.setSenha(senha); // Usa o setter para aplicar o hash
+        this.senha = senha.hash();
         this.createdAt = Instant.now();
 
         Assert.isTrue(createdAt != null, "data de criação não pode ser nula");
-        Assert.isTrue(Instant.now().isAfter(createdAt), "data de criação não pode ser nula");
+        Assert.isTrue(Instant.now().isAfter(createdAt), "data de criação não pode ser futura");
     }
 
     @Deprecated
@@ -41,28 +41,7 @@ public class Usuario {
     }
 
     public boolean verificarSenha(String senha) {
-        return passwordEncoder.matches(senha, this.senha);
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    private void setSenha(String senha) {
-        Assert.hasText(senha, "senha é obrigatória");
-        this.senha = passwordEncoder.encode(senha);
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
+        return new BCryptPasswordEncoder().matches(senha, this.senha);
     }
 
     @Override

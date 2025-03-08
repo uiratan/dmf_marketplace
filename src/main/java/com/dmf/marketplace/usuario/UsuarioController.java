@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
+//1
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
@@ -15,16 +16,15 @@ public class UsuarioController {
 
     @PostMapping
     @Transactional
+    //1
     public void criar(@RequestBody @Valid NovoUsuarioRequest request) {
-        System.out.println("============ CONTROLLER ");
         Usuario usuario = request.toModel();
         manager.persist(usuario);
     }
 
     @GetMapping("/{id}")
-    public Usuario findById(@PathVariable Long id) {
-        System.out.println(id);
-        return manager.find(Usuario.class, id);
+    public String findById(@PathVariable Long id) {
+        return manager.find(Usuario.class, id).toString();
     }
 
 }
