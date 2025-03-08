@@ -1,18 +1,30 @@
 package com.dmf.marketplace.usuario;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
 
+    @PersistenceContext
+    private EntityManager manager;
+
     @PostMapping
-    public String criar(@RequestBody @Valid NovoUsuarioRequest request) {
-        return request.toString();
+    @Transactional
+    public void criar(@RequestBody @Valid NovoUsuarioRequest request) {
+        System.out.println("============ CONTROLLER ");
+        Usuario usuario = request.toModel();
+        manager.persist(usuario);
+    }
+
+    @GetMapping("/{id}")
+    public Usuario findById(@PathVariable Long id) {
+        System.out.println(id);
+        return manager.find(Usuario.class, id);
     }
 
 }

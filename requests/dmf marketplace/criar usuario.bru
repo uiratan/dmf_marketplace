@@ -5,7 +5,14 @@ meta {
 }
 
 post {
-  url: localhost/usuarios
-  body: none
+  url: http://localhost:8080/usuarios
+  body: json
   auth: none
+}
+
+body:json {
+  {
+    "login": "uiratan@gmail.com",
+    "senha": "123456"
+  }
 }
