@@ -22,7 +22,6 @@ public class NovoUsuarioRequest {
 
     //1
     public Usuario toModel() {
-//        return new Usuario(login, senha);
         return new Usuario(login, new SenhaLimpa(senha));
     }
 
