@@ -25,6 +25,9 @@ public class NovoUsuarioRequest {
         return new Usuario(login, new SenhaLimpa(senha));
     }
 
+    public String getLogin() {
+        return login;
+    }
 
     @Override
     public String toString() {

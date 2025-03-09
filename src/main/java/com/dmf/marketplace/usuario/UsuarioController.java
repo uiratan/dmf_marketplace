@@ -4,15 +4,30 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.validation.Validator;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-//1
+import java.util.Locale;
+
+//2
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
 
     @PersistenceContext
     private EntityManager manager;
+
+    //1
+    @Autowired
+    private ProibeUsuarioComEmailDuplicadoValidator  proibeUsuarioComEmailDuplicadoValidator;
+
+    @InitBinder
+    public void init(WebDataBinder binder) {
+        binder.addValidators(proibeUsuarioComEmailDuplicadoValidator );
+    }
 
     @PostMapping
     @Transactional
