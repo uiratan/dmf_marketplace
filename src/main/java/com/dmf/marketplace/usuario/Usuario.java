@@ -31,9 +31,6 @@ public class Usuario {
         this.login = login;
         this.senha = senha.hash();
         this.createdAt = Instant.now();
-
-        Assert.isTrue(createdAt != null, "data de criação não pode ser nula");
-        Assert.isTrue(Instant.now().isAfter(createdAt), "data de criação não pode ser futura");
     }
 
     @Deprecated
