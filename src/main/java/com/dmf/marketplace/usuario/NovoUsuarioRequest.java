@@ -29,6 +29,10 @@ public class NovoUsuarioRequest {
         return login;
     }
 
+    public String getSenha() {
+        return senha;
+    }
+
     @Override
     public String toString() {
         return "NovoUsuarioRequest{" +

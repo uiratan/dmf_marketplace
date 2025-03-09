@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -38,8 +39,12 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    public String findById(@PathVariable Long id) {
-        return manager.find(Usuario.class, id).toString();
+    public ResponseEntity<String> findById(@PathVariable Long id) {
+        Usuario usuario = manager.find(Usuario.class, id);
+        if (usuario == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(usuario.toString());
     }
 
 }
