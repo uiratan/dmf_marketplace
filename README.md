@@ -158,20 +158,25 @@ Implementa `UserDetailsService` para carregar usuários do banco.
     - Usa `BCryptPasswordEncoder` para verificar senhas.
 - **`UsuarioLogado`**: Implementa `UserDetails`, encapsulando um `Usuario` e fornecendo informações ao Spring Security.
 
----
+--- 
 
-### **TODO: Melhorias**
+### **Melhorias**
 
 1. **Segurança do Token JWT**:
     - **Chave Secreta**: O `secret` deveria ser mais longo e complexo (mínimo 256 bits para HMAC-SHA256). Considere usar um gerador seguro como `SecureRandom`.
+
+3. **Validação de Entrada**:
+    - No `LoginInputDto`, adicione anotações de validação como `@NotBlank` e `@Email` para garantir que os dados sejam válidos antes do processamento.
+
+---
+### **TODO: Melhorias**
+
+1. **Segurança do Token JWT**:
     - **Armazenamento Seguro**: Armazene o `secret` em um cofre (ex.: Vault) ou como variável de ambiente, não diretamente no `application.properties`.
 
 2. **Expiração e Refresh Token**:
     - Atualmente, só há um token de acesso. Adicione suporte a **refresh tokens** para evitar que o usuário precise relogar após a expiração.
     - Exemplo: Gere um refresh token com expiração maior e um endpoint `/api/auth/refresh`.
-
-3. **Validação de Entrada**:
-    - No `LoginInputDto`, adicione anotações de validação como `@NotBlank` e `@Email` para garantir que os dados sejam válidos antes do processamento.
 
 4. **Logging**:
     - Melhore os logs no `UserAuthenticationController` e `JwtAuthenticationEntryPoint` para incluir mais contexto (ex.: IP do cliente, endpoint solicitado).
