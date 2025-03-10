@@ -2,6 +2,7 @@ package com.dmf.marketplace.usuario;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -13,6 +14,25 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 public class ProibeUsuarioComEmailDuplicadoValidatorTest {
+
+    @Test
+    @DisplayName("deveria parar caso já tenha erro")
+    void testaValidateComErrors() {
+        //Arrange
+        UsuarioRepository usuarioRepository = Mockito.mock(UsuarioRepository.class);
+        ProibeUsuarioComEmailDuplicadoValidator validator = new ProibeUsuarioComEmailDuplicadoValidator(usuarioRepository);
+
+        NovoUsuarioRequest target = new NovoUsuarioRequest("email@email.com", "senhaa");
+
+        Errors errors = new BeanPropertyBindingResult(target, "login");
+        errors.reject("login");
+
+        //Act
+        validator.validate(target, errors);
+
+        Assertions.assertTrue(errors.hasErrors());
+        Assertions.assertEquals("login", errors.getGlobalErrors().get(0).getCode());
+    }
 
     @DisplayName("deveria lidar com login duplicado")
     @ParameterizedTest
