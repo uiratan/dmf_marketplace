@@ -1,7 +1,7 @@
 package com.dmf.marketplace.categoria;
 
-import com.dmf.marketplace.validation.annotations.ExistsId;
-import com.dmf.marketplace.validation.annotations.UniqueValue;
+import com.dmf.marketplace.compartilhado.ExistsId;
+import com.dmf.marketplace.compartilhado.UniqueValue;
 import jakarta.persistence.EntityManager;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
@@ -36,5 +36,13 @@ public class NovaCategoriaRequest {
             categoria.setCategoriaMae(categoriaMae);
         }
         return categoria;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public Long getIdCategoriaMae() {
+        return idCategoriaMae;
     }
 }
