@@ -1,4 +1,4 @@
-package com.dmf.marketplace.validation;
+package com.dmf.marketplace.compartilhado;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

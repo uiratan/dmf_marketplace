@@ -1,4 +1,4 @@
-package com.dmf.marketplace.validation;
+package com.dmf.marketplace.compartilhado;
 
 import java.time.LocalDateTime;
 import java.util.List;

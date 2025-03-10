@@ -1,4 +1,4 @@
-package com.dmf.marketplace.validation.annotations;
+package com.dmf.marketplace.compartilhado;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

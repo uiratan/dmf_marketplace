@@ -1,4 +1,4 @@
-package com.dmf.marketplace.validation.annotations;
+package com.dmf.marketplace.compartilhado;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

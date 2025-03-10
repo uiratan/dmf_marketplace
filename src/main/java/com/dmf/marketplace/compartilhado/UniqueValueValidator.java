@@ -1,13 +1,10 @@
-package com.dmf.marketplace.validation.annotations;
+package com.dmf.marketplace.compartilhado;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import org.springframework.util.Assert;
-
-import java.util.List;
 
 public class UniqueValueValidator implements ConstraintValidator<UniqueValue, Object>{
 	
