@@ -1,5 +1,6 @@
 package com.dmf.marketplace.categoria;
 
+import com.dmf.marketplace.compartilhado.ExcludeFromJacocoGeneratedReport;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -33,6 +34,19 @@ public class Categoria {
         this.categoriaMae = categoriaMae;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public Categoria getCategoriaMae() {
+        return categoriaMae;
+    }
+
+    @ExcludeFromJacocoGeneratedReport
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -40,6 +54,7 @@ public class Categoria {
         return Objects.equals(id, categoria.id);
     }
 
+    @ExcludeFromJacocoGeneratedReport
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
@@ -53,4 +68,5 @@ public class Categoria {
                 ", categoriaMae=" + categoriaMae +
                 '}';
     }
+
 }

@@ -1,5 +1,6 @@
 package com.dmf.marketplace.usuario;
 
+import com.dmf.marketplace.compartilhado.ExcludeFromJacocoGeneratedReport;
 import jakarta.persistence.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.Assert;
@@ -41,6 +42,7 @@ public class Usuario {
         return new BCryptPasswordEncoder().matches(senha, this.senha);
     }
 
+    @ExcludeFromJacocoGeneratedReport
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -48,11 +50,13 @@ public class Usuario {
         return Objects.equals(id, usuario.id);
     }
 
+    @ExcludeFromJacocoGeneratedReport
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
     }
 
+    @ExcludeFromJacocoGeneratedReport
     @Override
     public String toString() {
         return "Usuario{" +
