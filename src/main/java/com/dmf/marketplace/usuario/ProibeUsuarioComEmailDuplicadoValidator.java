@@ -1,5 +1,6 @@
 package com.dmf.marketplace.usuario;
 
+import com.dmf.marketplace.compartilhado.ExcludeFromJacocoGeneratedReport;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -16,6 +17,7 @@ public class ProibeUsuarioComEmailDuplicadoValidator implements Validator {
         this.repository = repository;
     }
 
+    @ExcludeFromJacocoGeneratedReport
     @Override
     public boolean supports(Class<?> clazz) {
         //1
