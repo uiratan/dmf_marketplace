@@ -1,65 +1,74 @@
 package com.dmf.marketplace.compartilhado.seguranca;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-
-import io.jsonwebtoken.security.Keys;
+import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.jose.crypto.MACSigner;
+import com.nimbusds.jose.crypto.MACVerifier;
+import com.nimbusds.jose.jwk.JWK;
+import com.nimbusds.jose.jwk.OctetSequenceKey;
+import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.SignedJWT;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
 import java.util.Date;
 
 @Component
 public class TokenManager {
 
-	private final SecretKey secretKey;
+	private final String secret;
 	private final long expirationInMillis;
+	private final JWK jwk;
 
 	public TokenManager(@Value("${jwt.secret}") String secret,
 						@Value("${jwt.expiration}") long expirationInMillis) {
-		this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+		this.secret = secret;
 		this.expirationInMillis = expirationInMillis;
+		this.jwk = new OctetSequenceKey.Builder(secret.getBytes())
+				.algorithm(JWSAlgorithm.HS256)
+				.build();
 	}
 
-	public String generateToken(Authentication authentication) {
+	public String generateToken(Authentication authentication) throws JOSEException {
 		UserDetails user = (UserDetails) authentication.getPrincipal();
 
-		final Date now = new Date();
-		final Date expiration = new Date(now.getTime() + this.expirationInMillis);
-
-		return Jwts.builder()
+		JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
 				.issuer("Desafio jornada dev eficiente mercado livre")
 				.subject(user.getUsername())
-				.issuedAt(now)
-				.expiration(expiration)
-				.signWith(secretKey)  // Usa a nova forma de assinatura
-				.compact();
+				.issueTime(new Date())
+				.expirationTime(new Date(System.currentTimeMillis() + expirationInMillis))
+				.build();
+
+		SignedJWT signedJWT = new SignedJWT(
+				new com.nimbusds.jose.JWSHeader(JWSAlgorithm.HS256),
+				claimsSet
+		);
+
+		// Cast para OctetSequenceKey para acessar toByteArray()
+		signedJWT.sign(new MACSigner(((OctetSequenceKey) jwk).toByteArray()));
+
+		return signedJWT.serialize();
 	}
 
-	public boolean isValid(String jwt) {
+	public boolean isValid(String token) {
 		try {
-			Jwts.parser()
-					.verifyWith(secretKey)
-					.build()
-					.parseSignedClaims(jwt);
-			return true;
-		} catch (JwtException | IllegalArgumentException e) {
+			SignedJWT signedJWT = SignedJWT.parse(token);
+			return signedJWT.verify(new MACVerifier(((OctetSequenceKey) jwk).toByteArray())) &&
+					new Date().before(signedJWT.getJWTClaimsSet().getExpirationTime());
+		} catch (ParseException | JOSEException e) {
 			return false;
 		}
 	}
 
-	public String getUserName(String jwt) {
-		Claims claims = Jwts.parser()
-				.verifyWith(secretKey)
-				.build()
-				.parseSignedClaims(jwt)
-				.getPayload();
-
-		return claims.getSubject();
-	}
+	public String getUserName(String token) {
+        try {
+            SignedJWT signedJWT = SignedJWT.parse(token);
+            return signedJWT.getJWTClaimsSet().getSubject();
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

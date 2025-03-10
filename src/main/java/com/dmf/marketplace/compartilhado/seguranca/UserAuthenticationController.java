@@ -1,5 +1,6 @@
 package com.dmf.marketplace.compartilhado.seguranca;
 
+import com.nimbusds.jose.JOSEException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,7 @@ public class UserAuthenticationController {
 	@Autowired
 	private TokenManager tokenManager;
 	
-	private static final Logger log = LoggerFactory
-			.getLogger(UserAuthenticationController.class);
+	private static final Logger log = LoggerFactory.getLogger(UserAuthenticationController.class);
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
@@ -34,12 +34,10 @@ public class UserAuthenticationController {
 		UsernamePasswordAuthenticationToken authenticationToken = loginInfo.build();
 
 		try {
-			Authentication authentication = authManager.authenticate(authenticationToken); 			
+			Authentication authentication = authManager.authenticate(authenticationToken);
 			String jwt = tokenManager.generateToken(authentication);
-			
 			return ResponseEntity.ok(jwt);
-		
-		} catch (AuthenticationException e) {
+		} catch (AuthenticationException | JOSEException e) {
 			log.error("[Autenticacao] {}",e);
 			return ResponseEntity.badRequest().build();
 		}

@@ -69,7 +69,7 @@ public class SecurityConfiguration {
 
 		@Override
 		public void commence(HttpServletRequest request, HttpServletResponse response,
-							 AuthenticationException authException) throws IOException, ServletException {
+							 AuthenticationException authException) throws IOException {
 			logger.error("Um acesso não autorizado foi verificado. Mensagem: {}", authException.getMessage());
 			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Você não está autorizado a acessar esse recurso.");
 		}
