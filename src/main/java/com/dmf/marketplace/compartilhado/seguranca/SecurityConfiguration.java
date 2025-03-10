@@ -45,6 +45,7 @@ public class SecurityConfiguration {
 						.requestMatchers(HttpMethod.GET, "/produtos/{id:[0-9]+}").permitAll()
 						.requestMatchers(HttpMethod.POST, "/usuarios").permitAll()
 						.requestMatchers("/api/auth/**").permitAll()
+						.requestMatchers("/error").permitAll() // Libera o endpoint /error
 						.anyRequest().authenticated()
 				)
 				.addFilterBefore(new JwtAuthenticationFilter(tokenManager, usersService),
@@ -69,8 +70,11 @@ public class SecurityConfiguration {
 
 		@Override
 		public void commence(HttpServletRequest request, HttpServletResponse response,
-							 AuthenticationException authException) throws IOException {
-			logger.error("Um acesso não autorizado foi verificado. Mensagem: {}", authException.getMessage());
+							 AuthenticationException authException) throws IOException, ServletException {
+			// Log de erro com contexto detalhado
+			logger.error("Acesso não autorizado: ip={}, endpoint={}, method={}, erro={}",
+					request.getRemoteAddr(), request.getRequestURI(), request.getMethod(), authException.getMessage());
+
 			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Você não está autorizado a acessar esse recurso.");
 		}
 	}

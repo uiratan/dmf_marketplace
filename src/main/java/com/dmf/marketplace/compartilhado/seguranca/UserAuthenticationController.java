@@ -1,6 +1,7 @@
 package com.dmf.marketplace.compartilhado.seguranca;
 
 import com.nimbusds.jose.JOSEException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,16 +30,24 @@ public class UserAuthenticationController {
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> authenticate(@RequestBody LoginInputDto loginInfo) {
+	public ResponseEntity<String> authenticate(@RequestBody LoginInputDto loginInfo, HttpServletRequest request) {
 	
 		UsernamePasswordAuthenticationToken authenticationToken = loginInfo.build();
 
 		try {
 			Authentication authentication = authManager.authenticate(authenticationToken);
 			String jwt = tokenManager.generateToken(authentication);
+
+			// Log de sucesso com contexto
+			log.info("Autenticação bem-sucedida: username={}, ip={}, endpoint={}, method={}",
+					authentication.getName(), request.getRemoteAddr(), request.getRequestURI(), request.getMethod());
+
 			return ResponseEntity.ok(jwt);
 		} catch (AuthenticationException | JOSEException e) {
-			log.error("[Autenticacao] {}",e);
+			// Log de erro com contexto
+			log.error("Falha na autenticação: ip={}, endpoint={}, method={}, erro={}",
+					request.getRemoteAddr(), request.getRequestURI(), request.getMethod(), e.getMessage());
+
 			return ResponseEntity.badRequest().build();
 		}
 		
