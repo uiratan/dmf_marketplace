@@ -38,6 +38,14 @@ public class Usuario {
     public Usuario() {
     }
 
+    public String getLogin() {
+        return login;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
     public boolean verificarSenha(String senha) {
         return new BCryptPasswordEncoder().matches(senha, this.senha);
     }
