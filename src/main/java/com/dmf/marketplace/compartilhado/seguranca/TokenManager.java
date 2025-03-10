@@ -12,8 +12,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
+import java.security.SecureRandom;
 import java.text.ParseException;
+import java.util.Base64;
 import java.util.Date;
 
 @Component
@@ -23,13 +26,26 @@ public class TokenManager {
 	private final long expirationInMillis;
 	private final JWK jwk;
 
-	public TokenManager(@Value("${jwt.secret}") String secret,
+	public TokenManager(@Value("${jwt.secret:}") String aSecret, // Valor padrão vazio
 						@Value("${jwt.expiration}") long expirationInMillis) {
-		this.secret = secret;
 		this.expirationInMillis = expirationInMillis;
-		this.jwk = new OctetSequenceKey.Builder(secret.getBytes())
+
+		// Se o secret não for fornecido ou for muito curto, gere um novo
+		if (!StringUtils.hasText(aSecret) || aSecret.length() < 32) { // 32 caracteres é um mínimo razoável para Base64
+			this.secret = generateSecureSecret();
+		} else {
+			this.secret = aSecret;
+		}
+		this.jwk = new OctetSequenceKey.Builder(this.secret.getBytes())
 				.algorithm(JWSAlgorithm.HS256)
 				.build();
+	}
+
+	private String generateSecureSecret() {
+		SecureRandom secureRandom = new SecureRandom();
+		byte[] secretBytes = new byte[32]; // 256 bits
+		secureRandom.nextBytes(secretBytes);
+		return Base64.getEncoder().encodeToString(secretBytes); // Codifica em Base64 para facilitar uso
 	}
 
 	public String generateToken(Authentication authentication) throws JOSEException {
