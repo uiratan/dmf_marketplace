@@ -1,0 +1,18 @@
+meta {
+  name: buscar usuario
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:8080/usuarios/1
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "login": "uiratan@gmail.com",
+    "senha": "123456"
+  }
+}
