@@ -38,10 +38,12 @@ public class Categoria {
         return id;
     }
 
+    @ExcludeFromJacocoGeneratedReport
     public String getNome() {
         return nome;
     }
 
+    @ExcludeFromJacocoGeneratedReport
     public Categoria getCategoriaMae() {
         return categoriaMae;
     }
