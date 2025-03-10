@@ -92,9 +92,7 @@
 				<configuration>
 					<argLine>
 						@{argLine}
-<!--						Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended-->
 						-Xshare:off
-<!--						Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK-->
 						-javaagent:${user.home}/.m2/repository/net/bytebuddy/byte-buddy-agent/${byte-buddy.version}/byte-buddy-agent-${byte-buddy.version}.jar
 					</argLine>
 				</configuration>
@@ -110,6 +108,9 @@
 						<goals>
 							<goal>prepare-agent</goal>
 						</goals>
+						<configuration>
+							<destFile>${project.build.directory}/jacoco.exec</destFile>
+						</configuration>
 					</execution>
 					<execution>
 						<id>report</id>
@@ -120,8 +121,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
-
 
 		</plugins>
 	</build>
