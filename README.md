@@ -168,7 +168,11 @@ Implementa `UserDetailsService` para carregar usuários do banco.
 3. **Validação de Entrada**:
     - No `LoginInputDto`, adicione anotações de validação como `@NotBlank` e `@Email` para garantir que os dados sejam válidos antes do processamento.
 
+4. **Logging**:
+    - Melhore os logs no `UserAuthenticationController` e `JwtAuthenticationEntryPoint` para incluir mais contexto (ex.: IP do cliente, endpoint solicitado).
+
 ---
+
 ### **TODO: Melhorias**
 
 1. **Segurança do Token JWT**:
@@ -177,9 +181,6 @@ Implementa `UserDetailsService` para carregar usuários do banco.
 2. **Expiração e Refresh Token**:
     - Atualmente, só há um token de acesso. Adicione suporte a **refresh tokens** para evitar que o usuário precise relogar após a expiração.
     - Exemplo: Gere um refresh token com expiração maior e um endpoint `/api/auth/refresh`.
-
-4. **Logging**:
-    - Melhore os logs no `UserAuthenticationController` e `JwtAuthenticationEntryPoint` para incluir mais contexto (ex.: IP do cliente, endpoint solicitado).
 
 5. **CORS Configuração**:
     - A configuração atual usa o padrão do Spring. Especifique origens permitidas explicitamente (ex.: `http.cors().configurationSource(...)`) para maior segurança.
