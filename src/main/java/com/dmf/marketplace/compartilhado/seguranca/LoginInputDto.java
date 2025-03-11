@@ -32,4 +32,12 @@ public class LoginInputDto {
 	public UsernamePasswordAuthenticationToken build() {
 		return new UsernamePasswordAuthenticationToken(this.email, this.password);
 	}
+
+	@Override
+	public String toString() {
+		return "LoginInputDto{" +
+				"email='" + email + '\'' +
+				", password='" + password + '\'' +
+				'}';
+	}
 }
