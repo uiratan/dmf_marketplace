@@ -5,6 +5,7 @@ import com.dmf.marketplace.usuario.Usuario;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
+import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -56,6 +57,16 @@ public class Produto {
             final String descricao,
             final Categoria categoria,
             final Usuario usuario) {
+        Assert.hasText(nome, "Nome não pode ser nulo ou vazio");
+        Assert.notNull(valor, "Valor não pode ser nulo");
+        Assert.isTrue(valor.compareTo(BigDecimal.ZERO) > 0, "Valor deve ser maior que zero");
+        Assert.isTrue(quantidadeEstoque >= 0, "Quantidade em estoque não pode ser negativa");
+        Assert.notNull(caracteristicas, "Lista de características não pode ser nula");
+        Assert.isTrue(!caracteristicas.isEmpty(), "Produto deve ter ao menos uma característica");
+        Assert.hasText(descricao, "Descrição não pode ser nula ou vazia");
+        Assert.notNull(categoria, "Categoria não pode ser nula");
+        Assert.notNull(usuario, "Usuário não pode ser nulo");
+
         this.nome = nome;
         this.valor = valor;
         this.quantidadeEstoque = quantidadeEstoque;
