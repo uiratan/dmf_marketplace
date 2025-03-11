@@ -17,26 +17,26 @@ import java.util.List;
 public class NovoProdutoRequest {
     @NotBlank
     @Size(min = 3)
-    private String nome;
+    private final String nome;
 
     @NotNull
     @Positive
-    private BigDecimal valor;
+    private final BigDecimal valor;
 
     @Min(0)
-    private int quantidadeEstoque;
+    private final int quantidadeEstoque;
 
     @Size(min = 3)
     @Valid
-    private List<NovaCaracteristicaProdutoRequest> caracteristicas = new ArrayList<>();
+    private final List<NovaCaracteristicaProdutoRequest> caracteristicas = new ArrayList<>();
 
     @NotBlank
     @Size(min = 10, max = 1000)
-    private String descricao;
+    private final String descricao;
 
     @NotNull
     @ExistsId(domainClass = Categoria.class, fieldName = "id")
-    private Long idCategoria;
+    private final Long idCategoria;
 
     public NovoProdutoRequest(
             final String nome,
