@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,6 +26,7 @@ public class UsersService implements UserDetailsService {
 	private UserDetailsMapper userDetailsMapper;
 
 	@Override
+	@Cacheable(value = "users", key = "#username")
 	public UserDetails loadUserByUsername(String username)
 			throws UsernameNotFoundException {
 

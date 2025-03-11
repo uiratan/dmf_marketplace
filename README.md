@@ -174,7 +174,13 @@ Implementa `UserDetailsService` para carregar usuários do banco.
 6. **Testes**:
     - Adicione mais testes unitários e de integração para cobrir cenários como token inválido, usuário inexistente, etc.
     - Use mocks para `AuthenticationManager` e `TokenManager`.
-   
+
+7. **Gerenciamento de Exceções**:
+    - Crie uma exceção personalizada para autenticação e um `ControllerAdvice` para tratar erros de forma consistente, retornando mensagens JSON detalhadas.
+
+8. **Performance**:
+    - No `UsersService`, considere adicionar um cache (ex.: Caffeine ou Spring Cache) para evitar consultas repetitivas ao banco.
+
 ---
 
 ### **TODO: Melhorias**
@@ -189,19 +195,8 @@ Implementa `UserDetailsService` para carregar usuários do banco.
 5. **CORS Configuração**:
     - A configuração atual usa o padrão do Spring. Especifique origens permitidas explicitamente (ex.: `http.cors().configurationSource(...)`) para maior segurança.
 
-7. **Gerenciamento de Exceções**:
-    - Crie uma exceção personalizada para autenticação e um `ControllerAdvice` para tratar erros de forma consistente, retornando mensagens JSON detalhadas.
-
-8. **Performance**:
-    - No `UsersService`, considere adicionar um cache (ex.: Caffeine ou Spring Cache) para evitar consultas repetitivas ao banco.
-
 9. **Documentação**:
     - Integre o Springdoc OpenAPI para gerar documentação automática da API (ex.: Swagger UI).
 
 10. **Versão do Java**:
     - Java 23 é recente (lançado em setembro de 2024). Considere usar uma versão LTS (ex.: Java 21) para maior suporte e estabilidade em produção.
-
----
-
-### **Conclusão**
-O código implementa uma autenticação baseada em JWT de forma sólida, mas há espaço para melhorias em segurança, usabilidade (refresh tokens) e manutenção (validação, testes, logs). Se precisar de exemplos de código para alguma sugestão, posso fornecer!
