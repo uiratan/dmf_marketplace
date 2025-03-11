@@ -26,7 +26,7 @@ public class ProdutosController {
     public ResponseEntity<NovoProdutoResponse> novoProduto(
             @RequestBody @Valid NovoProdutoRequest novoProdutoRequest,
             @AuthenticationPrincipal UsuarioLogado usuarioLogado) {
-        Produto produto = novoProdutoRequest.toModel(manager, usuarioLogado.get().getId());
+        Produto produto = novoProdutoRequest.toModel(manager, usuarioLogado.get());
         manager.persist(produto);
         NovoProdutoResponse novoProdutoResponse = new NovoProdutoResponse(produto);
         return ResponseEntity.ok(novoProdutoResponse);

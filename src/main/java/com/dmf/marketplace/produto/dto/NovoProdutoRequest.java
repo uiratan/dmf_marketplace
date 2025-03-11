@@ -54,13 +54,11 @@ public class NovoProdutoRequest {
 
     public Produto toModel(
             EntityManager manager,
-            Long idUsuario) {
+            Usuario usuario) {
+        Assert.notNull(usuario, "usuario não pode ser nulo");
 
         Categoria categoria = manager.find(Categoria.class, idCategoria);
         Assert.notNull(categoria, "categoria não existe no banco");
-
-        Usuario usuario = manager.find(Usuario.class, idUsuario);
-        Assert.notNull(usuario, "usuario não existe no banco");
 
         List<CaracteristicaProduto> caracteristicaProdutoList =
                 this.caracteristicas.stream()
