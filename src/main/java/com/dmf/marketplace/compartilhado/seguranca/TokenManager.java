@@ -27,7 +27,7 @@ public class TokenManager {
 	private final JWK jwk;
 
 	public TokenManager(@Value("${jwt.secret:}") String aSecret, // Valor padrão vazio
-						@Value("${jwt.expiration}") long expirationInMillis) {
+						@Value("${jwt.expiration:900000}") long expirationInMillis) {
 		this.expirationInMillis = expirationInMillis;
 
 		// Se o secret não for fornecido ou for muito curto, gere um novo
