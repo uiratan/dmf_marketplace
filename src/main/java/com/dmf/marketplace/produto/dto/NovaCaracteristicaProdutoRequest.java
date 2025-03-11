@@ -8,14 +8,14 @@ public class NovaCaracteristicaProdutoRequest {
 
     @NotBlank
     @Size(min = 3)
-    private String nome;
+    private final String nome;
 
     @NotBlank
     @Size(min = 3)
-    private String descricao;
+    private final String descricao;
 
-    public NovaCaracteristicaProdutoRequest(String caracteristica, String descricao) {
-        this.nome = caracteristica;
+    public NovaCaracteristicaProdutoRequest(String nome, String descricao) {
+        this.nome = nome;
         this.descricao = descricao;
     }
 
