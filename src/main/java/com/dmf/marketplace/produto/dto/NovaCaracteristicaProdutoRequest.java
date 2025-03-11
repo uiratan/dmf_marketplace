@@ -1,5 +1,6 @@
 package com.dmf.marketplace.produto.dto;
 
+import com.dmf.marketplace.produto.CaracteristicaProduto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -16,6 +17,10 @@ public class NovaCaracteristicaProdutoRequest {
     public NovaCaracteristicaProdutoRequest(String caracteristica, String descricao) {
         this.caracteristica = caracteristica;
         this.descricao = descricao;
+    }
+
+    public CaracteristicaProduto toModel() {
+        return new CaracteristicaProduto(this.caracteristica, this.descricao);
     }
 
     public String getCaracteristica() {

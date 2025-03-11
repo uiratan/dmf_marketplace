@@ -21,12 +21,6 @@ public class ProdutosController {
     @PersistenceContext
     private EntityManager manager;
 
-    /**
-     * endpoint de cadastro de produto
-     * dto para receber os dados do produto
-     * @AuthenticationPrincipal com os dados do usuario logado
-     * criar o produto no banco relacionando os dois
-     */
     @PostMapping
     @Transactional
     public ResponseEntity<NovoProdutoResponse> novoProduto(
@@ -37,6 +31,8 @@ public class ProdutosController {
         NovoProdutoResponse novoProdutoResponse = new NovoProdutoResponse(produto);
         return ResponseEntity.ok(novoProdutoResponse);
     }
+
+    // TODO: listar produtos de um usuario
 }
 
 

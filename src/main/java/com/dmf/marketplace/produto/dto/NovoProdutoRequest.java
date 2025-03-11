@@ -37,7 +37,13 @@ public class NovoProdutoRequest {
     @ExistsId(domainClass = Categoria.class, fieldName = "id")
     private Long idCategoria;
 
-    public NovoProdutoRequest(String nome, BigDecimal valor, int quantidadeEstoque, List<NovaCaracteristicaProdutoRequest> caracteristicas, String descricao, Long idCategoria) {
+    public NovoProdutoRequest(
+            final String nome,
+            final BigDecimal valor,
+            final int quantidadeEstoque,
+            final List<NovaCaracteristicaProdutoRequest> caracteristicas,
+            final String descricao,
+            final Long idCategoria) {
         this.nome = nome;
         this.valor = valor;
         this.quantidadeEstoque = quantidadeEstoque;
@@ -49,16 +55,17 @@ public class NovoProdutoRequest {
     public Produto toModel(
             EntityManager manager,
             Long idUsuario) {
-        Categoria categoria = manager.find(Categoria.class, idCategoria);
-        Usuario usuario = manager.find(Usuario.class, idUsuario);
 
+        Categoria categoria = manager.find(Categoria.class, idCategoria);
         Assert.notNull(categoria, "categoria não existe no banco");
+
+        Usuario usuario = manager.find(Usuario.class, idUsuario);
         Assert.notNull(usuario, "usuario não existe no banco");
 
-        List<CaracteristicaProduto> caracteristicaProdutoList
-                = this.caracteristicas.stream()
-                .map(c -> new CaracteristicaProduto(c.getCaracteristica(), c.getDescricao()))
-                .toList();
+        List<CaracteristicaProduto> caracteristicaProdutoList =
+                this.caracteristicas.stream()
+                        .map(NovaCaracteristicaProdutoRequest::toModel)
+                        .toList();
 
         return new Produto(
                 this.nome,
@@ -69,30 +76,6 @@ public class NovoProdutoRequest {
                 categoria,
                 usuario
         );
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public BigDecimal getValor() {
-        return valor;
-    }
-
-    public int getQuantidadeEstoque() {
-        return quantidadeEstoque;
-    }
-
-    public List<NovaCaracteristicaProdutoRequest> getCaracteristicas() {
-        return caracteristicas;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public Long getIdCategoria() {
-        return idCategoria;
     }
 
     @Override

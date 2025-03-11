@@ -29,6 +29,8 @@ public class CategoriaController {
         manager.persist(categoria);
         return categoria.toString();
     }
+
+    // TODO: listar categorias
 }
 
 /**
