@@ -56,15 +56,16 @@ public class CaracteristicaProduto {
         return produto;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         CaracteristicaProduto that = (CaracteristicaProduto) o;
-        return Objects.equals(getId(), that.getId());
+        return Objects.equals(getNome(), that.getNome()) && Objects.equals(getProduto(), that.getProduto());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return Objects.hash(getNome(), getProduto());
     }
 }

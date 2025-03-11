@@ -9,10 +9,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/produtos")
@@ -20,6 +18,11 @@ public class ProdutosController {
 
     @PersistenceContext
     private EntityManager manager;
+
+    @InitBinder
+    public void init(WebDataBinder binder) {
+        binder.addValidators(new ProibeCaracteristicaComNomeIgualValidator());
+    }
 
     @PostMapping
     @Transactional

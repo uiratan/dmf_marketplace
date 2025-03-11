@@ -8,8 +8,7 @@ import jakarta.validation.constraints.*;
 import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "tb_produto")
@@ -33,7 +32,7 @@ public class Produto {
     @Size(min = 3)
     @Valid
     @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL) // Cascade para persistir as características
-    private List<CaracteristicaProduto> caracteristicas;
+    private final Set<CaracteristicaProduto> caracteristicas = new HashSet<>();
 
     @NotBlank
     @Size(min = 10, max = 1000)
@@ -53,7 +52,7 @@ public class Produto {
             final String nome,
             final BigDecimal valor,
             final int quantidadeEstoque,
-            final List<CaracteristicaProduto> caracteristicas,
+            final Set<CaracteristicaProduto> caracteristicas,
             final String descricao,
             final Categoria categoria,
             final Usuario usuario) {
@@ -61,8 +60,8 @@ public class Produto {
         Assert.notNull(valor, "Valor não pode ser nulo");
         Assert.isTrue(valor.compareTo(BigDecimal.ZERO) > 0, "Valor deve ser maior que zero");
         Assert.isTrue(quantidadeEstoque >= 0, "Quantidade em estoque não pode ser negativa");
+        Assert.isTrue(caracteristicas.size()>=3, "Devem haver no mínimo 3 características diferentes para o produto");
         Assert.notNull(caracteristicas, "Lista de características não pode ser nula");
-        Assert.isTrue(!caracteristicas.isEmpty(), "Produto deve ter ao menos uma característica");
         Assert.hasText(descricao, "Descrição não pode ser nula ou vazia");
         Assert.notNull(categoria, "Categoria não pode ser nula");
         Assert.notNull(usuario, "Usuário não pode ser nulo");
@@ -70,11 +69,13 @@ public class Produto {
         this.nome = nome;
         this.valor = valor;
         this.quantidadeEstoque = quantidadeEstoque;
-        this.caracteristicas = caracteristicas;
         this.descricao = descricao;
         this.categoria = categoria;
         this.usuario = usuario;
+        this.caracteristicas.addAll(caracteristicas);
         associaCaracteristicas(); // Associa o Produto às características
+
+        Assert.isTrue(this.caracteristicas.size()>=3, "Devem haver no mínimo 3 características diferentes para o produto");
     }
 
     @Deprecated
@@ -83,7 +84,7 @@ public class Produto {
 
     // Método para associar o Produto às características
     private void associaCaracteristicas() {
-        if (this.caracteristicas != null) {
+        if (!this.caracteristicas.isEmpty()) {
             for (CaracteristicaProduto caracteristica : this.caracteristicas) {
                 caracteristica.setProduto(this);
             }
@@ -106,7 +107,7 @@ public class Produto {
         return quantidadeEstoque;
     }
 
-    public List<CaracteristicaProduto> getCaracteristicas() {
+    public Set<CaracteristicaProduto> getCaracteristicas() {
         return caracteristicas;
     }
 

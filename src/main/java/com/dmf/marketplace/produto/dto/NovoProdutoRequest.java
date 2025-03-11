@@ -11,8 +11,9 @@ import jakarta.validation.constraints.*;
 import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class NovoProdutoRequest {
     @NotBlank
@@ -28,7 +29,7 @@ public class NovoProdutoRequest {
 
     @Size(min = 3)
     @Valid
-    private final List<NovaCaracteristicaProdutoRequest> caracteristicas = new ArrayList<>();
+    private final Set<NovaCaracteristicaProdutoRequest> caracteristicas = new HashSet<>();
 
     @NotBlank
     @Size(min = 10, max = 1000)
@@ -42,7 +43,7 @@ public class NovoProdutoRequest {
             final String nome,
             final BigDecimal valor,
             final int quantidadeEstoque,
-            final List<NovaCaracteristicaProdutoRequest> caracteristicas,
+            final Set<NovaCaracteristicaProdutoRequest> caracteristicas,
             final String descricao,
             final Long idCategoria) {
         this.nome = nome;
@@ -61,10 +62,10 @@ public class NovoProdutoRequest {
         Categoria categoria = manager.find(Categoria.class, idCategoria);
         Assert.notNull(categoria, "categoria não existe no banco");
 
-        List<CaracteristicaProduto> caracteristicaProdutoList =
+        Set<CaracteristicaProduto> caracteristicaProdutoList =
                 this.caracteristicas.stream()
                         .map(NovaCaracteristicaProdutoRequest::toModel)
-                        .toList();
+                        .collect(Collectors.toSet());
 
         return new Produto(
                 this.nome,
@@ -75,6 +76,10 @@ public class NovoProdutoRequest {
                 categoria,
                 usuario
         );
+    }
+
+    public Set<NovaCaracteristicaProdutoRequest> getCaracteristicas() {
+        return caracteristicas;
     }
 
     @Override
@@ -89,4 +94,15 @@ public class NovoProdutoRequest {
                 '}';
     }
 
+    public Set<String> buscarCaracteristicasIguais() {
+        HashSet<String> nomesIguais = new HashSet<>();
+        HashSet<String> resultados = new HashSet<>();
+        for (NovaCaracteristicaProdutoRequest caracteristica : this.caracteristicas) {
+            String nome = caracteristica.getNome();
+            if (!nomesIguais.add(nome)) {
+                resultados.add(nome);
+            }
+        }
+        return resultados;
+    }
 }
