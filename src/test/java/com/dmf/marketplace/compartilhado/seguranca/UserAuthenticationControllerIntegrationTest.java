@@ -3,13 +3,16 @@ package com.dmf.marketplace.compartilhado.seguranca;
 import com.dmf.marketplace.usuario.SenhaLimpa;
 import com.dmf.marketplace.usuario.Usuario;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.Entity;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,8 +30,8 @@ class UserAuthenticationControllerIntegrationTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Autowired
-    private ApplicationContext applicationContext;
+    @PersistenceContext
+    private EntityManager manager;
 
     @Test
     void shouldReturnBadRequestForNonExistentUser() throws Exception {
@@ -58,14 +61,17 @@ class UserAuthenticationControllerIntegrationTest {
     @Test
     @Transactional
     void shouldAuthenticateSuccessfullyWithValidUser() throws Exception {
-        // Inserir usuário no banco (exemplo simplificado)
-        UsersService usersService = applicationContext.getBean(UsersService.class);
-        EntityManager entityManager = applicationContext.getBean(EntityManager.class);
-        entityManager.persist(new Usuario("test@example.com", new SenhaLimpa("password")));
+        // Inserir usuário no banco
+        String email = "test@example.com";
+        String rawPassword = "password";
+
+        Usuario usuario = new Usuario(email, new SenhaLimpa(rawPassword));
+        manager.persist(usuario);
+        manager.flush();
 
         LoginInputDto loginInfo = new LoginInputDto();
-        loginInfo.setEmail("test@example.com");
-        loginInfo.setPassword("password");
+        loginInfo.setEmail(email);
+        loginInfo.setPassword(rawPassword);
 
         mockMvc.perform(post("/api/auth")
                         .contentType(MediaType.APPLICATION_JSON)
