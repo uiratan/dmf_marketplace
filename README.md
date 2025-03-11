@@ -171,6 +171,10 @@ Implementa `UserDetailsService` para carregar usuários do banco.
 4. **Logging**:
     - Melhore os logs no `UserAuthenticationController` e `JwtAuthenticationEntryPoint` para incluir mais contexto (ex.: IP do cliente, endpoint solicitado).
 
+6. **Testes**:
+    - Adicione mais testes unitários e de integração para cobrir cenários como token inválido, usuário inexistente, etc.
+    - Use mocks para `AuthenticationManager` e `TokenManager`.
+   
 ---
 
 ### **TODO: Melhorias**
@@ -184,10 +188,6 @@ Implementa `UserDetailsService` para carregar usuários do banco.
 
 5. **CORS Configuração**:
     - A configuração atual usa o padrão do Spring. Especifique origens permitidas explicitamente (ex.: `http.cors().configurationSource(...)`) para maior segurança.
-
-6. **Testes**:
-    - Adicione mais testes unitários e de integração para cobrir cenários como token inválido, usuário inexistente, etc.
-    - Use mocks para `AuthenticationManager` e `TokenManager`.
 
 7. **Gerenciamento de Exceções**:
     - Crie uma exceção personalizada para autenticação e um `ControllerAdvice` para tratar erros de forma consistente, retornando mensagens JSON detalhadas.
