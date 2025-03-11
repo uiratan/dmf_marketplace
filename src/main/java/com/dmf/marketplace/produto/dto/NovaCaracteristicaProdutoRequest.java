@@ -8,23 +8,23 @@ public class NovaCaracteristicaProdutoRequest {
 
     @NotBlank
     @Size(min = 3)
-    private String caracteristica;
+    private String nome;
 
     @NotBlank
     @Size(min = 3)
     private String descricao;
 
     public NovaCaracteristicaProdutoRequest(String caracteristica, String descricao) {
-        this.caracteristica = caracteristica;
+        this.nome = caracteristica;
         this.descricao = descricao;
     }
 
     public CaracteristicaProduto toModel() {
-        return new CaracteristicaProduto(this.caracteristica, this.descricao);
+        return new CaracteristicaProduto(this.nome, this.descricao);
     }
 
-    public String getCaracteristica() {
-        return caracteristica;
+    public String getNome() {
+        return nome;
     }
 
     public String getDescricao() {
@@ -34,7 +34,7 @@ public class NovaCaracteristicaProdutoRequest {
     @Override
     public String toString() {
         return "NovaCaracteristicaProdutoRequest{" +
-                "caracteristica='" + caracteristica + '\'' +
+                "caracteristica='" + nome + '\'' +
                 ", descricao='" + descricao + '\'' +
                 '}';
     }

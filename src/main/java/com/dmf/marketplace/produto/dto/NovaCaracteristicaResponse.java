@@ -10,7 +10,7 @@ public record NovaCaracteristicaResponse(
     public NovaCaracteristicaResponse(CaracteristicaProduto caracteristica) {
         this(
                 caracteristica.getId(),
-                caracteristica.getCaracteristica(),
+                caracteristica.getNome(),
                 caracteristica.getDescricao()
         );
     }

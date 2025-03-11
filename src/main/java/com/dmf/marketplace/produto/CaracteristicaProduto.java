@@ -1,6 +1,5 @@
 package com.dmf.marketplace.produto;
 
-import com.dmf.marketplace.categoria.Categoria;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -17,7 +16,7 @@ public class CaracteristicaProduto {
 
     @NotBlank
     @Size(min = 3)
-    private String caracteristica;
+    private String nome;
 
     @NotBlank
     @Size(min = 3)
@@ -28,7 +27,7 @@ public class CaracteristicaProduto {
     private Produto produto;
 
     public CaracteristicaProduto(String caracteristica, String descricao) {
-        this.caracteristica = caracteristica;
+        this.nome = caracteristica;
         this.descricao = descricao;
     }
 
@@ -45,8 +44,8 @@ public class CaracteristicaProduto {
         return id;
     }
 
-    public String getCaracteristica() {
-        return caracteristica;
+    public String getNome() {
+        return nome;
     }
 
     public String getDescricao() {

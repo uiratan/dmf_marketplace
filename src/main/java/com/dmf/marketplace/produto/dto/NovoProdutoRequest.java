@@ -11,6 +11,7 @@ import jakarta.validation.constraints.*;
 import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 public class NovoProdutoRequest {
@@ -27,7 +28,7 @@ public class NovoProdutoRequest {
 
     @Size(min = 3)
     @Valid
-    private List<NovaCaracteristicaProdutoRequest> caracteristicas;
+    private List<NovaCaracteristicaProdutoRequest> caracteristicas = new ArrayList<>();
 
     @NotBlank
     @Size(min = 10, max = 1000)
@@ -47,7 +48,7 @@ public class NovoProdutoRequest {
         this.nome = nome;
         this.valor = valor;
         this.quantidadeEstoque = quantidadeEstoque;
-        this.caracteristicas = caracteristicas;
+        this.caracteristicas.addAll(caracteristicas);
         this.descricao = descricao;
         this.idCategoria = idCategoria;
     }
