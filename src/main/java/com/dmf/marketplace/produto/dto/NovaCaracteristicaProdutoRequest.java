@@ -23,14 +23,6 @@ public class NovaCaracteristicaProdutoRequest {
         return new CaracteristicaProduto(this.nome, this.descricao);
     }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
     @Override
     public String toString() {
         return "NovaCaracteristicaProdutoRequest{" +
