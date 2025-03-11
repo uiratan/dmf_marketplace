@@ -1,0 +1,22 @@
+meta {
+  name: criar categoria filha1
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:8080/categorias
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{auth_token}}
+}
+
+body:json {
+  {
+    "nome": "Computadores",
+    "idCategoriaMae": "1"
+  }
+}

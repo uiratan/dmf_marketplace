@@ -1,0 +1,31 @@
+meta {
+  name: novo produto erro
+  type: http
+  seq: 5
+}
+
+post {
+  url: http://localhost:8080/produtos
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{auth_token}}
+}
+
+body:json {
+  {
+    "nome": "",                        // Erro: @NotBlank (não pode ser vazio ou nulo)
+    "valor": -10.50,                  // Erro: @Positive (deve ser maior que 0)
+    "quantidadeEstoque": -5,          // Erro: @Min(0) (não pode ser menor que 0)
+    "caracteristicas": [              // Erro: @Size(min = 3) (deve ter pelo menos 3 itens)
+      {
+        "caracteristica": "",         // Erro: @NotBlank (não pode ser vazio ou nulo)
+        "descricao": ""               // Erro: @NotBlank (não pode ser vazio ou nulo)
+      }
+    ],
+    "descricao": "Curto",             // Erro: @Size(min = 10) (deve ter pelo menos 10 caracteres)
+    "idCategoria": null               // Erro: @NotNull (não pode ser nulo)
+  }
+}
