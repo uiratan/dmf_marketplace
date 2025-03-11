@@ -4,7 +4,7 @@ import com.dmf.marketplace.produto.CaracteristicaProduto;
 
 public record NovaCaracteristicaResponse(
         Long id,
-        String caracteristica,
+        String nome,
         String descricao
 ) {
     public NovaCaracteristicaResponse(CaracteristicaProduto caracteristica) {

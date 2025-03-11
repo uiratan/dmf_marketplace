@@ -34,7 +34,7 @@ public class NovaCaracteristicaProdutoRequest {
     @Override
     public String toString() {
         return "NovaCaracteristicaProdutoRequest{" +
-                "caracteristica='" + nome + '\'' +
+                "nome='" + nome + '\'' +
                 ", descricao='" + descricao + '\'' +
                 '}';
     }
