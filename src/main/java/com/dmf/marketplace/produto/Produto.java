@@ -29,6 +29,7 @@ public class Produto {
     @Min(0)
     private int quantidadeEstoque;
 
+    //1
     @Size(min = 3)
     @Valid
     @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL) // Cascade para persistir as características
@@ -38,11 +39,13 @@ public class Produto {
     @Size(min = 10, max = 1000)
     private String descricao;
 
+    //1
     @NotNull
     @ManyToOne
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
 
+    //1
     @NotNull
     @ManyToOne
     @JoinColumn(name = "usuario_id")
@@ -84,6 +87,7 @@ public class Produto {
 
     // Método para associar o Produto às características
     private void associaCaracteristicas() {
+        //1
         if (!this.caracteristicas.isEmpty()) {
             for (CaracteristicaProduto caracteristica : this.caracteristicas) {
                 caracteristica.setProduto(this);

@@ -27,6 +27,7 @@ public class NovoProdutoRequest {
     @Min(0)
     private final int quantidadeEstoque;
 
+    //1
     @Size(min = 3)
     @Valid
     private final Set<NovaCaracteristicaProdutoRequest> caracteristicas = new HashSet<>();
@@ -35,6 +36,7 @@ public class NovoProdutoRequest {
     @Size(min = 10, max = 1000)
     private final String descricao;
 
+    //1
     @NotNull
     @ExistsId(domainClass = Categoria.class, fieldName = "id")
     private final Long idCategoria;
@@ -43,6 +45,7 @@ public class NovoProdutoRequest {
             final String nome,
             final BigDecimal valor,
             final int quantidadeEstoque,
+            //1
             final Set<NovaCaracteristicaProdutoRequest> caracteristicas,
             final String descricao,
             final Long idCategoria) {
@@ -54,8 +57,10 @@ public class NovoProdutoRequest {
         this.idCategoria = idCategoria;
     }
 
+    //1
     public Produto toModel(
             EntityManager manager,
+            //1
             Usuario usuario) {
         Assert.notNull(usuario, "usuario não pode ser nulo");
 
@@ -97,8 +102,10 @@ public class NovoProdutoRequest {
     public Set<String> buscarCaracteristicasIguais() {
         HashSet<String> nomesIguais = new HashSet<>();
         HashSet<String> resultados = new HashSet<>();
+        //1
         for (NovaCaracteristicaProdutoRequest caracteristica : this.caracteristicas) {
             String nome = caracteristica.getNome();
+            //1
             if (!nomesIguais.add(nome)) {
                 resultados.add(nome);
             }
