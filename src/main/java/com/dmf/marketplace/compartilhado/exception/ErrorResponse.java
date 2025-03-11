@@ -1,4 +1,4 @@
-package com.dmf.marketplace.compartilhado;
+package com.dmf.marketplace.compartilhado.exception;
 
 import java.time.LocalDateTime;
 import java.util.List;

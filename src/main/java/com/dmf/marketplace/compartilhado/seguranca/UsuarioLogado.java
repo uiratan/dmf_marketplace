@@ -1,4 +1,4 @@
-package com.dmf.marketplace.compartilhado;
+package com.dmf.marketplace.compartilhado.seguranca;
 
 
 import com.dmf.marketplace.usuario.Usuario;
@@ -51,4 +51,11 @@ public class UsuarioLogado implements UserDetails {
 		return usuario;
 	}
 
+	@Override
+	public String toString() {
+		return "UsuarioLogado{" +
+				"usuario=" + usuario +
+				", springUserDetails=" + springUserDetails +
+				'}';
+	}
 }

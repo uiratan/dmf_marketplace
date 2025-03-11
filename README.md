@@ -158,6 +158,34 @@ Implementa `UserDetailsService` para carregar usuários do banco.
     - Usa `BCryptPasswordEncoder` para verificar senhas.
 - **`UsuarioLogado`**: Implementa `UserDetails`, encapsulando um `Usuario` e fornecendo informações ao Spring Security.
 
+---
+
+# 4. Usuário logado cadastra novo produto
+Aqui a gente vai permitir o cadastro de um produto por usuário logado.
+
+## Necessidades
+* Tem um nome
+* Tem um valor
+* Tem quantidade disponível
+* Características(cada produto pode ter um conjunto de características diferente)
+* Da uma olhada nos detalhes de produtos diferentes do mercado livre.
+* Tem uma descrição que vai ser feita usando Markdown
+* Pertence a uma categoria
+* Instante de cadastro
+
+## Restrições
+* Nome é obrigatório
+* Valor é obrigatório e maior que zero
+* Quantidade é obrigatório e >= 0
+* O produto possui pelo menos três características
+* Descrição é obrigatória e tem máximo de 1000 caracteres.
+* A categoria é obrigatória
+
+## Resultado esperado
+* Um novo produto criado e status 200 retornado
+* Caso dê erro de validação retorne 400 e o json dos erros
+
+
 --- 
 
 ### **Melhorias**

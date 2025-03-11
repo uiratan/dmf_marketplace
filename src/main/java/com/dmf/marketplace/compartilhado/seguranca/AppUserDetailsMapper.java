@@ -1,6 +1,5 @@
-package com.dmf.marketplace.compartilhado;
+package com.dmf.marketplace.compartilhado.seguranca;
 
-import com.dmf.marketplace.compartilhado.seguranca.UserDetailsMapper;
 import com.dmf.marketplace.usuario.Usuario;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetails;

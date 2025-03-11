@@ -1,4 +1,4 @@
-package com.dmf.marketplace.compartilhado;
+package com.dmf.marketplace.compartilhado.validation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
@@ -10,14 +10,13 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-
 @Documented
-@Constraint(validatedBy = {UniqueValueValidator.class})
+@Constraint(validatedBy = {ExistsIdValidator.class})
 @Target({ FIELD})
 @Retention(RUNTIME)
-public @interface UniqueValue {
-	
-	String message() default "{fieldName} já existe no banco";
+public @interface ExistsId {
+
+	String message() default "{fieldName} não existe no banco";
 
 	Class<?>[] groups() default { };
 
@@ -26,6 +25,4 @@ public @interface UniqueValue {
 	String fieldName();
 
 	Class<?> domainClass();
-
 }
-

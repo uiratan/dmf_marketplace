@@ -1,7 +1,7 @@
 package com.dmf.marketplace.categoria;
 
-import com.dmf.marketplace.compartilhado.ExistsId;
-import com.dmf.marketplace.compartilhado.UniqueValue;
+import com.dmf.marketplace.compartilhado.validation.ExistsId;
+import com.dmf.marketplace.compartilhado.validation.UniqueValue;
 import jakarta.persistence.EntityManager;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
