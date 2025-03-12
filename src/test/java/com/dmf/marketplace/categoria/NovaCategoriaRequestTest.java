@@ -2,12 +2,9 @@ package com.dmf.marketplace.categoria;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.annotation.DirtiesContext;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -65,9 +62,7 @@ class NovaCategoriaRequestTest {
         NovaCategoriaRequest request = new NovaCategoriaRequest("Smartphones", 999L); // ID inexistente
 
         // Act & Assert
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            request.toModel(manager);
-        });
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> request.toModel(manager));
 
         assertEquals("O id da categoria mae precisa ser válido", exception.getMessage());
     }
