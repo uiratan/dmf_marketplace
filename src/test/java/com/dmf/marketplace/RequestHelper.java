@@ -27,14 +27,12 @@ public class RequestHelper {
     public ResultActions performPost(String url, Object requestBody) throws Exception {
         return mockMvc.perform(post(url)
                 .headers(buildHeaders())
-                .contentType(MediaType.APPLICATION_JSON)
                 .content(toJson(requestBody)));
     }
 
     public ResultActions performGet(String url) throws Exception {
         return mockMvc.perform(get(url)
-                .headers(buildHeaders())
-                .contentType(MediaType.APPLICATION_JSON));
+                .headers(buildHeaders()));
     }
 
     private String toJson(Object request) throws Exception {
@@ -43,13 +41,13 @@ public class RequestHelper {
 
     private HttpHeaders buildHeaders() {
         HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", MediaType.APPLICATION_JSON_VALUE); // Padrão fixo
         defaultHeaders.forEach(headers::add);
         return headers;
     }
 
     // Método para adicionar headers customizados, se necessário
-    public RequestHelper withHeader(String key, String value) {
+    public void withHeader(String key, String value) {
         defaultHeaders.put(key, value);
-        return this;
     }
 }

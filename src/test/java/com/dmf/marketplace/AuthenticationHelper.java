@@ -13,18 +13,28 @@ import org.springframework.test.web.servlet.MvcResult;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+
 public class AuthenticationHelper {
 
-    @Transactional
+    /**
+     * Gera um token JWT autenticando um usuário no endpoint /api/auth.
+     *
+     * @param mockMvc       MockMvc para simular requisições HTTP
+     * @param objectMapper  ObjectMapper para serializar/deserializar JSON
+     * @param entityManager EntityManager para persistir o usuário
+     * @param email         Email do usuário
+     * @param rawPassword      Senha em texto plano
+     * @return Token JWT gerado
+     * @throws Exception Se a autenticação falhar
+     */
     protected static String generateToken(
             MockMvc mockMvc,
             ObjectMapper objectMapper,
-            EntityManager entityManager) throws Exception {
-        String email = "test@example.com";
-        String rawPassword = "password";
+            EntityManager entityManager,
+            String email,
+            String rawPassword) throws Exception {
 
         entityManager.persist(new Usuario(email, new SenhaLimpa(rawPassword)));
-        entityManager.flush();
 
         LoginInputDto loginInfo = new LoginInputDto();
         loginInfo.setEmail(email);
