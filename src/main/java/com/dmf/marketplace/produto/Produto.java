@@ -16,11 +16,6 @@ import java.util.Set;
 @Table(name = "tb_produto")
 public class Produto {
 
-    //1
-    @Size(min = 3)
-    @Valid
-    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL) // Cascade para persistir as características
-    private final Set<CaracteristicaProduto> caracteristicas = new HashSet<>();
     @Id
     @GeneratedValue
     private Long id;
@@ -35,6 +30,12 @@ public class Produto {
     @NotBlank
     @Size(min = 10, max = 1000)
     private String descricao;
+
+    //1
+    @Size(min = 3)
+    @Valid
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL) // Cascade para persistir as características
+    private final Set<CaracteristicaProduto> caracteristicas = new HashSet<>();
 
     //1
     @NotNull
