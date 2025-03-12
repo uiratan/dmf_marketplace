@@ -8,6 +8,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+
 class UsuarioControllerTest extends BaseAuthenticatedControllerTest {
 
     private static final String BASE_URL = "/usuarios";
@@ -17,7 +18,7 @@ class UsuarioControllerTest extends BaseAuthenticatedControllerTest {
     public void deveriaCriarUsuarioComDadosValidos() throws Exception {
         NovoUsuarioRequest request = new NovoUsuarioRequest("email@novo.com", "senha123");
 
-        requestAuthenticatedHelper.performPost(BASE_URL, request)
+        requestHelper.performPost(BASE_URL, request)
                 .andExpect(status().isOk());
     }
 
@@ -27,10 +28,10 @@ class UsuarioControllerTest extends BaseAuthenticatedControllerTest {
         NovoUsuarioRequest request1 = new NovoUsuarioRequest("email@duplicado.com", "senha123");
         NovoUsuarioRequest requestDuplicado = new NovoUsuarioRequest("email@duplicado.com", "senha456");
 
-        requestAuthenticatedHelper.performPost(BASE_URL, request1)
+        requestHelper.performPost(BASE_URL, request1)
                 .andExpect(status().isOk());
 
-        requestAuthenticatedHelper.performPost(BASE_URL, requestDuplicado)
+        requestHelper.performPost(BASE_URL, requestDuplicado)
                 .andExpect(status().isBadRequest());
     }
 
@@ -41,7 +42,7 @@ class UsuarioControllerTest extends BaseAuthenticatedControllerTest {
         entityManager.persist(usuario);
         entityManager.flush();
 
-        requestAuthenticatedHelper.performGet(BASE_URL + "/" + usuario.getId())
+        requestHelper.performGet(BASE_URL + "/" + usuario.getId())
                 .andExpect(status().isOk())
         .andExpect(content().string(containsString("usuario@gmail.com")));
     }
@@ -49,7 +50,7 @@ class UsuarioControllerTest extends BaseAuthenticatedControllerTest {
     @Test
     @Transactional
     public void deveriaRetornar404QuandoIdNaoExiste() throws Exception {
-        requestAuthenticatedHelper.performGet(BASE_URL + "/999")
+        requestHelper.performGet(BASE_URL + "/999")
                 .andExpect(status().isNotFound());
     }
 }

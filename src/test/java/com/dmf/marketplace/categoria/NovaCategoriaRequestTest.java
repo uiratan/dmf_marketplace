@@ -2,10 +2,12 @@ package com.dmf.marketplace.categoria;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.DirtiesContext;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,6 +27,7 @@ class NovaCategoriaRequestTest {
         Categoria categoria = request.toModel(manager);
         manager.persist(categoria);
         manager.flush();
+        System.out.println(categoria);
 
         // Assert
         assertNotNull(categoria.getId());
@@ -39,6 +42,7 @@ class NovaCategoriaRequestTest {
         Categoria categoriaMae = new Categoria("categoria mae");
         manager.persist(categoriaMae);
         manager.flush();
+        System.out.println(categoriaMae);
 
         NovaCategoriaRequest request = new NovaCategoriaRequest("categoria", categoriaMae.getId());
 
@@ -46,6 +50,7 @@ class NovaCategoriaRequestTest {
         Categoria categoriaFilha = request.toModel(manager);
         manager.persist(categoriaFilha);
         manager.flush();
+        System.out.println(categoriaFilha);
 
         // Assert
         assertNotNull(categoriaFilha.getId());

@@ -16,7 +16,7 @@ class CategoriaControllerTest extends BaseAuthenticatedControllerTest {
     @Transactional
     public void teste1() throws Exception {
         NovaCategoriaRequest request = new NovaCategoriaRequest("categoria", null);
-        requestAuthenticatedHelper.performPost(BASE_URL, request)
+        requestHelper.performPost(BASE_URL, request)
                 .andExpect(status().isOk());
     }
 
@@ -25,11 +25,11 @@ class CategoriaControllerTest extends BaseAuthenticatedControllerTest {
     @Transactional
     public void teste2() throws Exception {
         NovaCategoriaRequest requestMae = new NovaCategoriaRequest("categoria mae", null);
-        requestAuthenticatedHelper.performPost(BASE_URL, requestMae)
+        requestHelper.performPost(BASE_URL, requestMae)
                 .andExpect(status().isOk());
 
         NovaCategoriaRequest requestFilha = new NovaCategoriaRequest("categoria", requestMae.getIdCategoriaMae());
-        requestAuthenticatedHelper.performPost(BASE_URL, requestFilha)
+        requestHelper.performPost(BASE_URL, requestFilha)
                 .andExpect(status().isOk());
     }
 
@@ -38,11 +38,11 @@ class CategoriaControllerTest extends BaseAuthenticatedControllerTest {
     @Transactional
     public void deveriaRetornarErroComNomeDuplicado() throws Exception {
         NovaCategoriaRequest request = new NovaCategoriaRequest("categoria", null);
-        requestAuthenticatedHelper.performPost(BASE_URL, request)
+        requestHelper.performPost(BASE_URL, request)
                 .andExpect(status().isOk());
 
         NovaCategoriaRequest requestDuplicado = new NovaCategoriaRequest("categoria", null);
-        requestAuthenticatedHelper.performPost(BASE_URL, requestDuplicado)
+        requestHelper.performPost(BASE_URL, requestDuplicado)
                 .andExpect(status().isBadRequest());
     }
 
@@ -51,7 +51,7 @@ class CategoriaControllerTest extends BaseAuthenticatedControllerTest {
     @Transactional
     public void teste4() throws Exception {
         NovaCategoriaRequest request = new NovaCategoriaRequest("categoria", 1L);
-        requestAuthenticatedHelper.performPost(BASE_URL, request)
+        requestHelper.performPost(BASE_URL, request)
                 .andExpect(status().isBadRequest());
     }
 }
