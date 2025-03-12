@@ -83,8 +83,28 @@ public class NovoProdutoRequest {
         );
     }
 
+    public String getNome() {
+        return nome;
+    }
+
+    public BigDecimal getValor() {
+        return valor;
+    }
+
+    public int getQuantidadeEstoque() {
+        return quantidadeEstoque;
+    }
+
     public Set<NovaCaracteristicaProdutoRequest> getCaracteristicas() {
         return caracteristicas;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public Long getIdCategoria() {
+        return idCategoria;
     }
 
     @Override

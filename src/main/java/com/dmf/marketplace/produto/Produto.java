@@ -8,33 +8,30 @@ import jakarta.validation.constraints.*;
 import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_produto")
 public class Produto {
-
-    @Id
-    @GeneratedValue
-    private Long id;
-
-    @NotBlank
-    @Size(min = 3)
-    private String nome;
-
-    @NotNull
-    @Positive
-    private BigDecimal valor;
-
-    @Min(0)
-    private int quantidadeEstoque;
 
     //1
     @Size(min = 3)
     @Valid
     @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL) // Cascade para persistir as características
     private final Set<CaracteristicaProduto> caracteristicas = new HashSet<>();
-
+    @Id
+    @GeneratedValue
+    private Long id;
+    @NotBlank
+    @Size(min = 3)
+    private String nome;
+    @NotNull
+    @Positive
+    private BigDecimal valor;
+    @Min(0)
+    private int quantidadeEstoque;
     @NotBlank
     @Size(min = 10, max = 1000)
     private String descricao;
@@ -63,7 +60,7 @@ public class Produto {
         Assert.notNull(valor, "Valor não pode ser nulo");
         Assert.isTrue(valor.compareTo(BigDecimal.ZERO) > 0, "Valor deve ser maior que zero");
         Assert.isTrue(quantidadeEstoque >= 0, "Quantidade em estoque não pode ser negativa");
-        Assert.isTrue(caracteristicas.size()>=3, "Devem haver no mínimo 3 características diferentes para o produto");
+        Assert.isTrue(caracteristicas.size() >= 3, "Devem haver no mínimo 3 características diferentes para o produto");
         Assert.notNull(caracteristicas, "Lista de características não pode ser nula");
         Assert.hasText(descricao, "Descrição não pode ser nula ou vazia");
         Assert.notNull(categoria, "Categoria não pode ser nula");
@@ -77,8 +74,6 @@ public class Produto {
         this.usuario = usuario;
         this.caracteristicas.addAll(caracteristicas);
         associaCaracteristicas(); // Associa o Produto às características
-
-        Assert.isTrue(this.caracteristicas.size()>=3, "Devem haver no mínimo 3 características diferentes para o produto");
     }
 
     @Deprecated
@@ -87,11 +82,8 @@ public class Produto {
 
     // Método para associar o Produto às características
     private void associaCaracteristicas() {
-        //1
-        if (!this.caracteristicas.isEmpty()) {
-            for (CaracteristicaProduto caracteristica : this.caracteristicas) {
-                caracteristica.setProduto(this);
-            }
+        for (CaracteristicaProduto caracteristica : this.caracteristicas) {
+            caracteristica.setProduto(this);
         }
     }
 

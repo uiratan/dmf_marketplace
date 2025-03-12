@@ -27,6 +27,10 @@ public class NovaCaracteristicaProdutoRequest {
         return nome;
     }
 
+    public String getDescricao() {
+        return descricao;
+    }
+
     @Override
     public String toString() {
         return "NovaCaracteristicaProdutoRequest{" +
