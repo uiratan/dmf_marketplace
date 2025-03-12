@@ -31,13 +31,14 @@ public class ProibeUsuarioComEmailDuplicadoValidatorTest {
         validator.validate(target, errors);
 
         Assertions.assertTrue(errors.hasErrors());
-        Assertions.assertEquals("login", errors.getGlobalErrors().get(0).getCode());
+        Assertions.assertEquals("login", errors.getGlobalErrors().getFirst().getCode());
     }
 
     @DisplayName("deveria lidar com login duplicado")
     @ParameterizedTest
     @MethodSource("geradorTeste1")
-    void teste1(Optional<Usuario> possivelUsuario, boolean esperado) {
+    void teste1(Optional<Usuario> possivelUsuario,
+                boolean esperado) {
         UsuarioRepository usuarioRepository = Mockito.mock(UsuarioRepository.class);
         ProibeUsuarioComEmailDuplicadoValidator validator = new ProibeUsuarioComEmailDuplicadoValidator(usuarioRepository);
 

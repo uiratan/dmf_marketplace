@@ -38,7 +38,7 @@ class UsuarioControllerTest extends BaseAuthenticatedControllerTest {
     @Test
     @Transactional
     public void deveriaRetornarUsuarioPorId() throws Exception {
-        Usuario usuario = new Usuario("usuario@gmail.com", new SenhaLimpa("senhaa"));
+        Usuario usuario = new Usuario("usuario@gmail.com", new SenhaLimpa("123456"));
         entityManager.persist(usuario);
         entityManager.flush();
 

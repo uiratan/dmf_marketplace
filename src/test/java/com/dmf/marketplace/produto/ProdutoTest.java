@@ -6,13 +6,13 @@ import com.dmf.marketplace.usuario.Usuario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
-import org.mockito.Mockito;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ProdutoTest {
@@ -81,7 +81,7 @@ class ProdutoTest {
         Produto produto1 = new Produto("Smartphone", new BigDecimal("2500"), 10, caracteristicas, "Descrição", categoria, usuario);
         Produto produto2 = new Produto("Smartphone", new BigDecimal("2500"), 10, caracteristicas, "Descrição", categoria, usuario);
 
-        produto1.equals(produto2);
+        assertEquals(produto1, produto2);
         assertThat(produto1).isEqualTo(produto2);
     }
 }
