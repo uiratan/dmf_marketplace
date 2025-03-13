@@ -1,6 +1,7 @@
 package com.dmf.marketplace.produto.dto;
 
 import com.dmf.marketplace.categoria.Categoria;
+import com.dmf.marketplace.compartilhado.ExcludeFromJacocoGeneratedReport;
 import com.dmf.marketplace.compartilhado.validation.ExistsId;
 import com.dmf.marketplace.produto.CaracteristicaProduto;
 import com.dmf.marketplace.produto.Produto;
@@ -107,6 +108,7 @@ public class NovoProdutoRequest {
         return idCategoria;
     }
 
+    @ExcludeFromJacocoGeneratedReport
     @Override
     public String toString() {
         return "NovoProdutoRequest{" +

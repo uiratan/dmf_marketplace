@@ -1,6 +1,7 @@
 package com.dmf.marketplace.produto;
 
 import com.dmf.marketplace.categoria.Categoria;
+import com.dmf.marketplace.compartilhado.ExcludeFromJacocoGeneratedReport;
 import com.dmf.marketplace.usuario.Usuario;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
@@ -81,6 +82,10 @@ public class Produto {
     public Produto() {
     }
 
+    public boolean pertenceAoUsuario(Usuario usuario) {
+        return this.usuario.equals(usuario);
+    }
+
     // Método para associar o Produto às características
     private void associaCaracteristicas() {
         for (CaracteristicaProduto caracteristica : this.caracteristicas) {
@@ -116,6 +121,7 @@ public class Produto {
         return categoria;
     }
 
+    @ExcludeFromJacocoGeneratedReport
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -130,5 +136,19 @@ public class Produto {
 
     public Usuario getUsuario() {
         return usuario;
+    }
+
+    @Override
+    public String toString() {
+        return "Produto{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", valor=" + valor +
+                ", quantidadeEstoque=" + quantidadeEstoque +
+                ", descricao='" + descricao + '\'' +
+                ", caracteristicas=" + caracteristicas +
+                ", categoria=" + categoria +
+                ", usuario=" + usuario +
+                '}';
     }
 }
