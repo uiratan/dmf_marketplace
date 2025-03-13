@@ -1,4 +1,4 @@
-package com.dmf.marketplace.config;
+package com.dmf.marketplace.compartilhado.aws;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -7,6 +7,7 @@ import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.S3Configuration;
 
 import java.net.URI;
 
@@ -32,6 +33,9 @@ public class S3Config {
                 .region(Region.of(region))
                 .credentialsProvider(StaticCredentialsProvider.create(credentials))
                 .endpointOverride(URI.create(endpoint)) // Define o endpoint do LocalStack
+                .serviceConfiguration(S3Configuration.builder()
+                        .pathStyleAccessEnabled(true) // Força o uso de path-style
+                        .build())
                 .build();
     }
 }

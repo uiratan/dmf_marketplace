@@ -1,4 +1,4 @@
-package com.dmf.marketplace.aws;
+package com.dmf.marketplace.compartilhado.aws;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +21,9 @@ public class S3Service {
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
 
+    @Value("${cloud.aws.endpoint}")
+    private String endpoint;
+
     public List<String> uploadImages(List<String> imageUrls) throws IOException {
         List<String> s3Urls = new ArrayList<>();
 
@@ -41,8 +44,8 @@ public class S3Service {
             // Faz o upload
             s3Client.putObject(putObjectRequest, RequestBody.fromBytes(imageBytes));
 
-            // Gera a URL do S3
-            String s3Url = String.format("https://app.localstack.cloud/inst/default/resources/s3/%s/%s", bucketName, fileName);
+            // URL ajustada para LocalStack (path-style)
+            String s3Url = String.format("%s/%s/%s", endpoint, bucketName, fileName);
             s3Urls.add(s3Url);
         }
 
