@@ -1,5 +1,6 @@
 package com.dmf.marketplace.produto;
 
+import com.dmf.marketplace.compartilhado.ExcludeFromJacocoGeneratedReport;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -57,6 +58,7 @@ public class CaracteristicaProduto {
     }
 
 
+    @ExcludeFromJacocoGeneratedReport
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
