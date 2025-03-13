@@ -9,9 +9,7 @@ import jakarta.validation.constraints.*;
 import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "tb_produto")
@@ -49,6 +47,10 @@ public class Produto {
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
+
+    @ElementCollection // Para uma tabela separada de imagens
+    @Column(name = "imagem_url")
+    private List<String> imagens = new ArrayList<>();
 
     public Produto(
             final String nome,
@@ -93,6 +95,11 @@ public class Produto {
         }
     }
 
+    // Método para adicionar imagens
+    public void adicionarImagens(List<String> novasImagens) {
+        this.imagens.addAll(novasImagens);
+    }
+
     public Long getId() {
         return id;
     }
@@ -119,6 +126,10 @@ public class Produto {
 
     public Categoria getCategoria() {
         return categoria;
+    }
+
+    public List<String> getImagens() {
+        return imagens;
     }
 
     @ExcludeFromJacocoGeneratedReport
