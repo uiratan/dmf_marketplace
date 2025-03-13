@@ -1,0 +1,22 @@
+meta {
+  name: autenticar2
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:8080/api/auth
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "uiratan2@gmail.com",
+    "password": "123456"
+  }
+}
+
+vars:post-response {
+  auth_token2: res.body
+}

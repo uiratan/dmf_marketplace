@@ -1,0 +1,18 @@
+meta {
+  name: criar usuario2
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:8080/usuarios
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "login": "uiratan2@gmail.com",
+    "senha": "123456"
+  }
+}
