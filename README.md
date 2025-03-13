@@ -21,8 +21,7 @@
 ## Resultado esperado
 * Status 400 informando que não foi possível realizar um cadastro com este email.
 
-
-# 2. Cadastro de categorias
+# 3. Cadastro de categorias
 ## Necessidades
 * No mercado livre você pode criar hierarquias de categorias livres. Ex: Tecnologia -> Celulares -> Smartphones -> Android,Ios etc. Perceba que o sistema precisa ser flexível o suficiente para que essas sequências sejam criadas.
 * Toda categoria tem um nome
@@ -36,7 +35,7 @@
 * Categoria criada e status 200 retornado pelo endpoint.
 * Caso exista erros de validação, o endpoint deve retornar 400 e o json dos erros.
 
-# 3. Segurança
+# 4. Segurança
 
 ## Usuário logado
 
@@ -160,7 +159,7 @@ Implementa `UserDetailsService` para carregar usuários do banco.
 
 ---
 
-# 4. Usuário logado cadastra novo produto
+# 5. Usuário logado cadastra novo produto
 Aqui a gente vai permitir o cadastro de um produto por usuário logado.
 
 ## Necessidades
@@ -228,3 +227,26 @@ Aqui a gente vai permitir o cadastro de um produto por usuário logado.
 
 10. **Versão do Java**:
     - Java 23 é recente (lançado em setembro de 2024). Considere usar uma versão LTS (ex.: Java 21) para maior suporte e estabilidade em produção.
+
+
+# 6. Usuário logado adiciona imagem no seu produto
+* Com um produto cadastrado, um usuário logado pode adicionar imagens ao seu produto. 
+* Não precisa salvar a imagem em algum cloud ou no próprio sistema de arquivos. 
+* Cada arquivo de imagem pode virar um link ficticio que pode ser adicionado ao produto.
+
+## Necessidades
+* Adicionar uma ou mais imagens a um determinado produto do próprio usuário
+
+## Restrições
+* Tem uma ou mais fotos
+* Só pode adicionar fotos ao produto que pertence ao próprio usuário
+
+## Resultado esperado
+* Imagens adicionadas e 200 como retorno
+* Caso dê erro de validação retorne 400 e o json dos erros
+* Caso tente adicionar imagens a um produto que não é seu retorne 403.
+
+## Desafio extra
+Como você faria para que em dev a imagem virasse um link fictício e em produção executasse um código que enviasse a imagem para algum cloud da vida?
+
+
