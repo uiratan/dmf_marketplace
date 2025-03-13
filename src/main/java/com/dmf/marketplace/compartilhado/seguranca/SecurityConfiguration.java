@@ -12,6 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,57 +26,66 @@ import java.io.IOException;
 @Configuration
 public class SecurityConfiguration {
 
-	private final UsersService usersService;
-	private final TokenManager tokenManager;
+    private static final Logger log = LoggerFactory.getLogger(SecurityConfiguration.class);
+    private final UsersService usersService;
+    private final TokenManager tokenManager;
 
-	private static final Logger log = LoggerFactory.getLogger(SecurityConfiguration.class);
+    public SecurityConfiguration(UsersService usersService, TokenManager tokenManager) {
+        this.usersService = usersService;
+        this.tokenManager = tokenManager;
+    }
 
-	public SecurityConfiguration(UsersService usersService, TokenManager tokenManager) {
-		this.usersService = usersService;
-		this.tokenManager = tokenManager;
-	}
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> {
+                }) // Ativa CORS com configurações padrões
+                .sessionManagement(
+                        session -> session
+                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Stateless por padrão
+//                                .sessionFixation().migrateSession() // Para evitar problemas de sessão
+                )
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.GET, "/produtos/{id:[0-9]+}").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/usuarios").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/error").permitAll() // Libera o endpoint /error
+                        .requestMatchers("/h2-console/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(new JwtAuthenticationFilter(tokenManager, usersService),
+                        UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(new JwtAuthenticationEntryPoint()))
+                .headers(headers -> headers
+                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::disable // Desativa X-Frame-Options para o H2 Console
+                        )
+                )
+                .build();
+    }
 
-	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		return http
-				.csrf(AbstractHttpConfigurer::disable)
-				.cors(cors -> {}) // Ativa CORS com configurações padrões
-				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.authorizeHttpRequests(auth -> auth
-						.requestMatchers(HttpMethod.GET, "/produtos/{id:[0-9]+}").permitAll()
-						.requestMatchers(HttpMethod.POST, "/usuarios").permitAll()
-						.requestMatchers("/api/auth/**").permitAll()
-						.requestMatchers("/error").permitAll() // Libera o endpoint /error
-						.anyRequest().authenticated()
-				)
-				.addFilterBefore(new JwtAuthenticationFilter(tokenManager, usersService),
-						UsernamePasswordAuthenticationFilter.class)
-				.exceptionHandling(exception -> exception.authenticationEntryPoint(new JwtAuthenticationEntryPoint()))
-				.build();
-	}
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();
+    }
 
-	@Bean
-	public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
-		return authConfig.getAuthenticationManager();
-	}
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+    private static class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
-	private static class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
+        private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationEntryPoint.class);
 
-		private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationEntryPoint.class);
+        @Override
+        public void commence(HttpServletRequest request, HttpServletResponse response,
+                             AuthenticationException authException) throws IOException, ServletException {
+            // Log de erro com contexto detalhado
+            logger.error("Acesso não autorizado: ip={}, endpoint={}, method={}, erro={}",
+                    request.getRemoteAddr(), request.getRequestURI(), request.getMethod(), authException.getMessage());
 
-		@Override
-		public void commence(HttpServletRequest request, HttpServletResponse response,
-							 AuthenticationException authException) throws IOException, ServletException {
-			// Log de erro com contexto detalhado
-			logger.error("Acesso não autorizado: ip={}, endpoint={}, method={}, erro={}",
-					request.getRemoteAddr(), request.getRequestURI(), request.getMethod(), authException.getMessage());
-
-			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Você não está autorizado a acessar esse recurso.");
-		}
-	}
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Você não está autorizado a acessar esse recurso.");
+        }
+    }
 }
