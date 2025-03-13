@@ -184,51 +184,6 @@ Aqui a gente vai permitir o cadastro de um produto por usuário logado.
 * Um novo produto criado e status 200 retornado
 * Caso dê erro de validação retorne 400 e o json dos erros
 
-
---- 
-
-### **Melhorias**
-
-1. **Segurança do Token JWT**:
-    - **Chave Secreta**: O `secret` deveria ser mais longo e complexo (mínimo 256 bits para HMAC-SHA256). Considere usar um gerador seguro como `SecureRandom`.
-
-3. **Validação de Entrada**:
-    - No `LoginInputDto`, adicione anotações de validação como `@NotBlank` e `@Email` para garantir que os dados sejam válidos antes do processamento.
-
-4. **Logging**:
-    - Melhore os logs no `UserAuthenticationController` e `JwtAuthenticationEntryPoint` para incluir mais contexto (ex.: IP do cliente, endpoint solicitado).
-
-6. **Testes**:
-    - Adicione mais testes unitários e de integração para cobrir cenários como token inválido, usuário inexistente, etc.
-    - Use mocks para `AuthenticationManager` e `TokenManager`.
-
-7. **Gerenciamento de Exceções**:
-    - Crie uma exceção personalizada para autenticação e um `ControllerAdvice` para tratar erros de forma consistente, retornando mensagens JSON detalhadas.
-
-8. **Performance**:
-    - No `UsersService`, considere adicionar um cache (ex.: Caffeine ou Spring Cache) para evitar consultas repetitivas ao banco.
-
----
-
-### **TODO: Melhorias**
-
-1. **Segurança do Token JWT**:
-    - **Armazenamento Seguro**: Armazene o `secret` em um cofre (ex.: Vault) ou como variável de ambiente, não diretamente no `application.properties`.
-
-2. **Expiração e Refresh Token**:
-    - Atualmente, só há um token de acesso. Adicione suporte a **refresh tokens** para evitar que o usuário precise relogar após a expiração.
-    - Exemplo: Gere um refresh token com expiração maior e um endpoint `/api/auth/refresh`.
-
-5. **CORS Configuração**:
-    - A configuração atual usa o padrão do Spring. Especifique origens permitidas explicitamente (ex.: `http.cors().configurationSource(...)`) para maior segurança.
-
-9. **Documentação**:
-    - Integre o Springdoc OpenAPI para gerar documentação automática da API (ex.: Swagger UI).
-
-10. **Versão do Java**:
-    - Java 23 é recente (lançado em setembro de 2024). Considere usar uma versão LTS (ex.: Java 21) para maior suporte e estabilidade em produção.
-
-
 # 6. Usuário logado adiciona imagem no seu produto
 * Com um produto cadastrado, um usuário logado pode adicionar imagens ao seu produto. 
 * Não precisa salvar a imagem em algum cloud ou no próprio sistema de arquivos. 
@@ -249,4 +204,44 @@ Aqui a gente vai permitir o cadastro de um produto por usuário logado.
 ## Desafio extra
 Como você faria para que em dev a imagem virasse um link fictício e em produção executasse um código que enviasse a imagem para algum cloud da vida?
 
+--- 
 
+# **Melhorias**
+
+1. **Segurança do Token JWT**:
+    - **Chave Secreta**: O `secret` deveria ser mais longo e complexo (mínimo 256 bits para HMAC-SHA256). Considere usar um gerador seguro como `SecureRandom`.
+
+3. **Validação de Entrada**:
+    - No `LoginInputDto`, adicione anotações de validação como `@NotBlank` e `@Email` para garantir que os dados sejam válidos antes do processamento.
+
+4. **Logging**:
+    - Melhore os logs no `UserAuthenticationController` e `JwtAuthenticationEntryPoint` para incluir mais contexto (ex.: IP do cliente, endpoint solicitado).
+
+6. **Testes**:
+    - Adicione mais testes unitários e de integração para cobrir cenários como token inválido, usuário inexistente, etc.
+    - Use mocks para `AuthenticationManager` e `TokenManager`.
+
+7. **Gerenciamento de Exceções**:
+    - Crie uma exceção personalizada para autenticação e um `ControllerAdvice` para tratar erros de forma consistente, retornando mensagens JSON detalhadas.
+
+8. **Performance**:
+    - No `UsersService`, considere adicionar um cache (ex.: Caffeine ou Spring Cache) para evitar consultas repetitivas ao banco.
+
+10. **Versão do Java**:
+    - Java 23 é recente (lançado em setembro de 2024). Considere usar uma versão LTS (ex.: Java 21) para maior suporte e estabilidade em produção.
+---
+
+### **TODO**
+
+1. **Segurança do Token JWT**:
+    - **Armazenamento Seguro**: Armazene o `secret` em um cofre (ex.: Vault) ou como variável de ambiente, não diretamente no `application.properties`.
+
+2. **Expiração e Refresh Token**:
+    - Atualmente, só há um token de acesso. Adicione suporte a **refresh tokens** para evitar que o usuário precise relogar após a expiração.
+    - Exemplo: Gere um refresh token com expiração maior e um endpoint `/api/auth/refresh`.
+
+5. **CORS Configuração**:
+    - A configuração atual usa o padrão do Spring. Especifique origens permitidas explicitamente (ex.: `http.cors().configurationSource(...)`) para maior segurança.
+
+9. **Documentação**:
+    - Integre o Springdoc OpenAPI para gerar documentação automática da API (ex.: Swagger UI).
