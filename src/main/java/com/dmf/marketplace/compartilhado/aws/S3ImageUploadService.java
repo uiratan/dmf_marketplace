@@ -1,7 +1,9 @@
 package com.dmf.marketplace.compartilhado.aws;
 
+import com.dmf.marketplace.compartilhado.ImageUploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -13,7 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class S3Service {
+@Profile("prod")
+public class S3ImageUploadService implements ImageUploadService {
 
     @Autowired
     private S3Client s3Client;
@@ -24,6 +27,7 @@ public class S3Service {
     @Value("${cloud.aws.endpoint}")
     private String endpoint;
 
+    @Override
     public List<String> uploadImages(List<String> imageUrls) throws IOException {
         List<String> s3Urls = new ArrayList<>();
 
