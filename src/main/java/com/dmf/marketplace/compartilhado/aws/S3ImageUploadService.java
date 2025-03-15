@@ -15,9 +15,10 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.net.URLConnection;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -27,6 +28,8 @@ import java.util.stream.Collectors;
 public class S3ImageUploadService implements ImageUploadService {
 
     private static final Logger logger = LoggerFactory.getLogger(S3ImageUploadService.class);
+
+    private final HttpClient httpClient = HttpClient.newHttpClient(); // Instância reutilizável
 
     @Autowired
     private S3Client s3Client;
@@ -54,7 +57,6 @@ public class S3ImageUploadService implements ImageUploadService {
                 })
                 .collect(Collectors.toList());
     }
-
 
     @Override
     public List<String> uploadImagesFromFiles(List<MultipartFile> files)  {
@@ -100,13 +102,15 @@ public class S3ImageUploadService implements ImageUploadService {
     }
 
     private byte[] downloadImageFromUrl(String imageUrl) throws IOException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(imageUrl))
+                .build();
         try {
-            URL url = new URI(imageUrl).toURL();
-            try (var inputStream = url.openStream()) {
-                return inputStream.readAllBytes();
-            }
-        } catch (URISyntaxException e) {
-            throw new IOException("URL inválida: " + imageUrl, e);
+            HttpResponse<byte[]> response = httpClient.send(request, HttpResponse.BodyHandlers.ofByteArray());
+            return response.body();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IOException("Download interrompido: " + imageUrl, e);
         }
     }
 
