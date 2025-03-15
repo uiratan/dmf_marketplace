@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -28,30 +27,52 @@ public class ImagensProdutoController {
     @Autowired
     private Environment environment;
 
-    @PostMapping("/{id}/imagens")
+    @PostMapping("/{id}/imagens-url")
     @Transactional // Garante que a transação seja gerenciada
-    public ResponseEntity<String> novaImagemProduto(
+    public ResponseEntity<String> adicionaImagensURL(
             @AuthenticationPrincipal UsuarioLogado usuarioLogado,
             @PathVariable("id") Long idProduto,
-            @RequestBody @Valid NovaImagemRequest request) {
+            @RequestBody @Valid NovaImagemURLRequest request) {
         Produto produto = manager.find(Produto.class, idProduto);
         if (produto == null) {
             return ResponseEntity.status(404).body("Produto não encontrado.");
         }
 
         if (produto.pertenceAoUsuario(usuarioLogado.get())) {
-            try {
-                List<String> imageUrls = imageUploadService.uploadImages(request.imagens());
-                // Persiste no banco apenas em produção
-                if (isProductionProfileActive()) {
-                    produto.adicionarImagens(imageUrls);
-                    manager.merge(produto); // Atualiza o produto no banco
-                    return ResponseEntity.ok("Imagens enviadas e salvas com sucesso: " + imageUrls);
-                } else {
-                    return ResponseEntity.ok("Imagens processadas (fictícias) com sucesso: " + imageUrls);
-                }
-            } catch (IOException e) {
-                return ResponseEntity.status(500).body("Erro ao enviar imagens: " + e.getMessage());
+            List<String> imageUrls = imageUploadService.uploadImagesFromUrl(request.imagens());
+            // Persiste no banco apenas em produção
+            if (isProductionProfileActive()) {
+                produto.adicionarImagens(imageUrls);
+                manager.merge(produto); // Atualiza o produto no banco
+                return ResponseEntity.ok("Imagens enviadas e salvas com sucesso: " + imageUrls);
+            } else {
+                return ResponseEntity.ok("Imagens processadas (fictícias) com sucesso: " + imageUrls);
+            }
+        } else {
+            return ResponseEntity.status(403).body("Você não tem permissão para adicionar imagens a este produto."); // Status 403 Forbidden
+        }
+    }
+
+    @PostMapping("/{id}/imagens-arquivo")
+    @Transactional // Garante que a transação seja gerenciada
+    public ResponseEntity<String> adicionaImagensArquivos(
+            @AuthenticationPrincipal UsuarioLogado usuarioLogado,
+            @PathVariable("id") Long idProduto,
+            @Valid NovaImagemArquivoRequest request) {
+        Produto produto = manager.find(Produto.class, idProduto);
+        if (produto == null) {
+            return ResponseEntity.status(404).body("Produto não encontrado.");
+        }
+
+        if (produto.pertenceAoUsuario(usuarioLogado.get())) {
+            List<String> imageUrls = imageUploadService.uploadImagesFromFiles(request.imagens());
+            // Persiste no banco apenas em produção
+            if (isProductionProfileActive()) {
+                produto.adicionarImagens(imageUrls);
+                manager.merge(produto); // Atualiza o produto no banco
+                return ResponseEntity.ok("Imagens enviadas e salvas com sucesso: " + imageUrls);
+            } else {
+                return ResponseEntity.ok("Imagens processadas (fictícias) com sucesso: " + imageUrls);
             }
         } else {
             return ResponseEntity.status(403).body("Você não tem permissão para adicionar imagens a este produto."); // Status 403 Forbidden
