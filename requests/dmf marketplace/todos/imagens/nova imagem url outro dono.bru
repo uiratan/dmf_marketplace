@@ -1,0 +1,24 @@
+meta {
+  name: nova imagem url outro dono
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8080/produtos/1/imagens-url
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{auth_token2}}
+}
+
+body:json {
+  {
+    "imagens": [
+      "https://exemplo.com/imagem1.jpg",
+      "https://exemplo.com/imagem2.jpg"
+    ]
+  }
+}

@@ -1,0 +1,35 @@
+meta {
+  name: nova imagem arquivos
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:8080/produtos/1/imagens-arquivo
+  body: multipartForm
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{auth_token}}
+}
+
+body:json {
+  {
+    "imagens": [
+      "https://www.wikiparques.org/images/8/8c/2017935485904.jpg",
+      "https://tm.ibxk.com.br/materias/5866/21577.jpg",
+      "https://kinsta.com/pt/wp-content/uploads/sites/3/2020/10/tipos-de-arquivo-de-imagem.png",
+      "https://kinsta.com/wp-content/uploads/2020/08/raster-image-jpg.jpg",
+      "https://kinsta.com/wp-content/uploads/2020/08/vector-image.jpg",
+      "https://kinsta.com/wp-content/uploads/2020/08/turtle-dancing-gif.gif",
+      "https://kinsta.com/wp-content/uploads/2020/08/bmp-vs-gif.png",
+      "https://kinsta.com/wp-content/uploads/2020/08/1200px-SVG_logo.svg.png"
+    ]
+  }
+}
+
+body:multipart-form {
+  imagens: @file(C:\Users\uirat\Pictures\Acer\Acer_Wallpaper_01_3840x2400.jpg)
+  imagens: @file(C:\Users\uirat\Pictures\Acer\Acer_Wallpaper_02_3840x2400.jpg)
+}
