@@ -34,7 +34,7 @@ public class ProibeUsuarioComEmailDuplicadoValidator implements Validator {
         NovoUsuarioRequest request = (NovoUsuarioRequest) target;
 
         //1
-        Optional<Usuario> possivelUsuario = repository.findByLogin(request.getLogin());
+        Optional<Usuario> possivelUsuario = repository.findByLogin(request.login());
 
         //1
         if (possivelUsuario.isPresent()) {
