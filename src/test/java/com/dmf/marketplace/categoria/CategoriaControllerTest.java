@@ -28,7 +28,7 @@ class CategoriaControllerTest extends BaseAuthenticatedControllerTest {
         requestHelper.performPost(BASE_URL, requestMae)
                 .andExpect(status().isOk());
 
-        NovaCategoriaRequest requestFilha = new NovaCategoriaRequest("categoria", requestMae.getIdCategoriaMae());
+        NovaCategoriaRequest requestFilha = new NovaCategoriaRequest("categoria", requestMae.idCategoriaMae());
         requestHelper.performPost(BASE_URL, requestFilha)
                 .andExpect(status().isOk());
     }

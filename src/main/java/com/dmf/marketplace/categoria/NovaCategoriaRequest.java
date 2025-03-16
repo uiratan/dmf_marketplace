@@ -7,18 +7,13 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import org.springframework.util.Assert;
 
-//4
-public class NovaCategoriaRequest {
-
-    //1
-    @NotBlank
-    @UniqueValue(domainClass = Categoria.class, fieldName = "nome")
-    private final String nome;
-
-    //1
-    @Positive
-    @ExistsId(domainClass = Categoria.class, fieldName = "id")
-    private final Long idCategoriaMae;
+/**
+ * @param nome           1
+ * @param idCategoriaMae 1
+ */ //4
+public record NovaCategoriaRequest(
+        @UniqueValue(domainClass = Categoria.class, fieldName = "nome") @NotBlank String nome,
+        @ExistsId(domainClass = Categoria.class, fieldName = "id") @Positive Long idCategoriaMae) {
 
     public NovaCategoriaRequest(final String nome, final Long idCategoriaMae) {
         this.nome = nome;
@@ -38,11 +33,4 @@ public class NovaCategoriaRequest {
         return categoria;
     }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public Long getIdCategoriaMae() {
-        return idCategoriaMae;
-    }
 }
