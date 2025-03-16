@@ -1,6 +1,7 @@
 package com.dmf.marketplace.produto;
 
 import com.dmf.marketplace.compartilhado.ExcludeFromJacocoGeneratedReport;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -23,6 +24,7 @@ public class CaracteristicaProduto {
     @Size(min = 3)
     private String descricao;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "produto_id")
     private Produto produto;

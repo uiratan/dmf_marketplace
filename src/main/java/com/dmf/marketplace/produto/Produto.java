@@ -3,6 +3,7 @@ package com.dmf.marketplace.produto;
 import com.dmf.marketplace.categoria.Categoria;
 import com.dmf.marketplace.compartilhado.ExcludeFromJacocoGeneratedReport;
 import com.dmf.marketplace.usuario.Usuario;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -31,6 +32,7 @@ public class Produto {
     private String descricao;
 
     //1
+    @JsonManagedReference
     @Size(min = 3)
     @Valid
     @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL) // Cascade para persistir as características
@@ -43,7 +45,6 @@ public class Produto {
     private Categoria categoria;
 
     //1
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
@@ -160,6 +161,7 @@ public class Produto {
                 ", caracteristicas=" + caracteristicas +
                 ", categoria=" + categoria +
                 ", usuario=" + usuario +
+                ", imagens=" + imagens +
                 '}';
     }
 }
