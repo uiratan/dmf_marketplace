@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/produtos")
 public class ProdutosController {
@@ -40,31 +42,10 @@ public class ProdutosController {
         Produto produto = manager.find(Produto.class, id);
         return ResponseEntity.ok(produto);
     }
+
+    @GetMapping
+    public ResponseEntity<List<Produto>> listar() {
+        List<Produto> produtos = manager.createQuery("SELECT p FROM Produto p", Produto.class).getResultList();
+        return ResponseEntity.ok(produtos);
+    }
 }
-
-
-/*
-  # 4. Usuário logado cadastra novo produto
-   Aqui a gente vai permitir o cadastro de um produto por usuário logado.
-
-   ## Necessidades
-   * Tem um nome
-   * Tem um valor
-   * Tem quantidade disponível
-   * Características(cada produto pode ter um conjunto de características diferente)
-   * Tem uma descrição que vai ser feita usando Markdown
-   * Pertence a uma categoria
-   * Instante de cadastro
-
-   ## Restrições
-   * Nome é obrigatório
-   * Valor é obrigatório e maior que zero
-   * Quantidade é obrigatório e ≥ 0
-   * O produto possui pelo menos três características
-   * Descrição é obrigatória e tem máximo de 1000 caracteres.
-   * A categoria é obrigatória
-
-   ## Resultado esperado
-   * Um novo produto criado e status 200 retornado
-   * Caso dê erro de validação retorne 400 e o json dos erros
- */
