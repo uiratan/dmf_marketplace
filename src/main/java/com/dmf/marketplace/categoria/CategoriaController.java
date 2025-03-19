@@ -2,11 +2,11 @@ package com.dmf.marketplace.categoria;
 
 import jakarta.persistence.EntityManager;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 //2
 @RestController
@@ -30,5 +30,9 @@ public class CategoriaController {
         return categoria.toString();
     }
 
-    // TODO: listar categorias
+    @GetMapping
+    public ResponseEntity<List<Categoria>> listar() {
+        List<Categoria> categorias = manager.createQuery("SELECT c FROM Categoria c", Categoria.class).getResultList();
+        return ResponseEntity.ok(categorias);
+    }
 }
