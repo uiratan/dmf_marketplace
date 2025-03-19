@@ -1,6 +1,5 @@
 package com.dmf.marketplace.compartilhado.seguranca;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -20,8 +19,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.io.IOException;
+import java.util.List;
 
 @Configuration
 public class SecurityConfiguration {
@@ -39,12 +42,10 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(cors -> {
-                }) // Ativa CORS com configurações padrões
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Ativa CORS com configurações padrões
                 .sessionManagement(
                         session -> session
-                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Stateless por padrão
-//                                .sessionFixation().migrateSession() // Para evitar problemas de sessão
+                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/produtos/{id:[0-9]+}").permitAll()
@@ -65,6 +66,18 @@ public class SecurityConfiguration {
     }
 
     @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:4200")); // Permite Angular
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Métodos permitidos
+        configuration.setAllowedHeaders(List.of("*")); // Permite todos os headers
+        configuration.setAllowCredentials(true); // Permite envio de cookies (se necessário)
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration); // Aplica a todos os endpoints
+        return source;
+    }
+
+    @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
@@ -80,7 +93,7 @@ public class SecurityConfiguration {
 
         @Override
         public void commence(HttpServletRequest request, HttpServletResponse response,
-                             AuthenticationException authException) throws IOException, ServletException {
+                             AuthenticationException authException) throws IOException {
             // Log de erro com contexto detalhado
             logger.error("Acesso não autorizado: ip={}, endpoint={}, method={}, erro={}",
                     request.getRemoteAddr(), request.getRequestURI(), request.getMethod(), authException.getMessage());
