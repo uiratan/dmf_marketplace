@@ -5,13 +5,9 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.Validator;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Locale;
 
 //2
 @RestController
@@ -48,19 +44,3 @@ public class UsuarioController {
     }
 
 }
-
-/**
- * Cadastro de novo usuário
- * necessidades
- * precisamos saber o instante do cadastro, login e senha.
- * restrições
- * O instante não pode ser nulo e não pode ser no futuro
- * O login não pode ser em branco ou nula
- * O login precisa ter o formato do email
- * A senha não pode ser branca ou nula
- * A senha precisa ter no mínimo 6 caracteres
- * A senha deve ser guardada usando algum algoritmo de hash da sua escolha.
- * resultado esperado
- * O usuário precisa estar criado no sistema
- * O cliente que fez a requisição precisa saber que o usuário foi criado. Apenas um retorno com status 200 está suficente.
- */
