@@ -1,5 +1,6 @@
 package com.dmf.marketplace.usuario;
 
+import com.dmf.marketplace.produto.Produto;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -8,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 //2
 @RestController
@@ -43,4 +46,23 @@ public class UsuarioController {
         return ResponseEntity.ok(usuario.toString());
     }
 
+    @GetMapping
+    public ResponseEntity<List<Usuario>> buscarTodos() {
+        List<Usuario> usuarios = manager.createQuery("SELECT u FROM Usuario u", Usuario.class).getResultList();
+        return ResponseEntity.ok(usuarios);
+    }
+
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity<Void> atualizar(@PathVariable Long id, @RequestBody @Valid EditaUsuarioRequest request) {
+        Usuario usuario = manager.find(Usuario.class, id);
+        if (usuario == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        usuario.atualizarUsuario(request.nome(), request.login(), new SenhaLimpa(request.senha()));
+        manager.merge(usuario);
+
+        return ResponseEntity.ok().build();
+    }
 }

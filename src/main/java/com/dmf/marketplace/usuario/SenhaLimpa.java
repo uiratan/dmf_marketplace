@@ -18,6 +18,10 @@ public class SenhaLimpa {
         this.senha = senha;
     }
 
+    protected String getSenha() {
+        return senha;
+    }
+
     public String hash() {
         return new BCryptPasswordEncoder().encode(senha);
     }

@@ -2,6 +2,8 @@ package com.dmf.marketplace.usuario;
 
 import com.dmf.marketplace.compartilhado.ExcludeFromJacocoGeneratedReport;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.Assert;
 
@@ -17,6 +19,8 @@ public class Usuario {
     @GeneratedValue
     @Column(name = "id_usuario")
     private Long id;
+    @Column(name = "nome")
+    private String nome;
     @Column(name = "login", nullable = false)
     private String login;
     @Column(name = "senha", nullable = false)
@@ -24,14 +28,33 @@ public class Usuario {
     @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME(6)")
     private Instant createdAt;
 
+    @Column(name = "updated_at", nullable = false, columnDefinition = "DATETIME(6)")
+    private Instant updatedAt;
+
     //1
-    public Usuario(String login, SenhaLimpa senha) {
+    public Usuario(String login, SenhaLimpa senhaLimpa) {
         Assert.hasText(login, "login é obrigatório");
-        Assert.notNull(senha, "o objeto do tipo SenhaLimpa não pode ser nulo");
+        Assert.notNull(senhaLimpa, "o objeto do tipo SenhaLimpa não pode ser nulo");
 
         this.login = login;
-        this.senha = senha.hash();
+        this.senha = senhaLimpa.hash();
         this.createdAt = Instant.now();
+    }
+
+    public void atualizarUsuario(String nome, String login, SenhaLimpa senhaLimpa) {
+        if (!nome.isBlank()) {
+            this.nome = nome;
+        }
+        if (!login.isBlank()) {
+            this.login = login;
+        }
+        if (!senhaLimpa.getSenha().isBlank()) {
+            this.senha = senhaLimpa.hash();
+        }
+    }
+
+    public boolean verificarSenha(String senha) {
+        return new BCryptPasswordEncoder().matches(senha, this.senha);
     }
 
     @Deprecated
@@ -42,6 +65,10 @@ public class Usuario {
         return id;
     }
 
+    public String getNome() {
+        return nome;
+    }
+
     public String getLogin() {
         return login;
     }
@@ -50,8 +77,12 @@ public class Usuario {
         return senha;
     }
 
-    public boolean verificarSenha(String senha) {
-        return new BCryptPasswordEncoder().matches(senha, this.senha);
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public Instant getUpdatedAt() {
+        return updatedAt;
     }
 
     @ExcludeFromJacocoGeneratedReport
@@ -78,6 +109,5 @@ public class Usuario {
                 ", createdAt=" + createdAt +
                 '}';
     }
-
 
 }
