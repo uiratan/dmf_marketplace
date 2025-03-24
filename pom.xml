@@ -97,6 +97,10 @@
 			<version>2.25.0</version> <!-- Use a versão mais recente -->
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-hateoas</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

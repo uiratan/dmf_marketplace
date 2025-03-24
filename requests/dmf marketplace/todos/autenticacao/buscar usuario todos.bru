@@ -1,0 +1,29 @@
+meta {
+  name: buscar usuario todos
+  type: http
+  seq: 4
+}
+
+get {
+  url: http://localhost:8080/usuarios?page=0&size=10&sortBy=login&sortDirection=ASC
+  body: json
+  auth: none
+}
+
+params:query {
+  page: 0
+  size: 10
+  sortBy: login
+  sortDirection: ASC
+}
+
+headers {
+  Authorization: Bearer {{auth_token}}
+}
+
+body:json {
+  {
+    "login": "uiratan@gmail.com",
+    "senha": "123456"
+  }
+}

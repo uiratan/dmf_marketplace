@@ -2,8 +2,6 @@ package com.dmf.marketplace.usuario;
 
 import com.dmf.marketplace.compartilhado.ExcludeFromJacocoGeneratedReport;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.Assert;
 
@@ -28,7 +26,7 @@ public class Usuario {
     @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME(6)")
     private Instant createdAt;
 
-    @Column(name = "updated_at", nullable = false, columnDefinition = "DATETIME(6)")
+    @Column(name = "updated_at", columnDefinition = "DATETIME(6)")
     private Instant updatedAt;
 
     //1
@@ -41,24 +39,19 @@ public class Usuario {
         this.createdAt = Instant.now();
     }
 
-    public void atualizarUsuario(String nome, String login, SenhaLimpa senhaLimpa) {
-        if (!nome.isBlank()) {
-            this.nome = nome;
-        }
-        if (!login.isBlank()) {
-            this.login = login;
-        }
-        if (!senhaLimpa.getSenha().isBlank()) {
-            this.senha = senhaLimpa.hash();
-        }
+    @Deprecated
+    public Usuario() {
+    }
+
+    public void atualizarUsuario(String nome, String login) {
+        this.nome = nome;
+        this.login = login;
+        updatedAt = Instant.now();
+//        this.senha = senhaLimpa.hash();
     }
 
     public boolean verificarSenha(String senha) {
         return new BCryptPasswordEncoder().matches(senha, this.senha);
-    }
-
-    @Deprecated
-    public Usuario() {
     }
 
     public Long getId() {

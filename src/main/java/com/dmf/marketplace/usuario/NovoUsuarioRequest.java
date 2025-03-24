@@ -11,7 +11,7 @@ public record NovoUsuarioRequest(
 
     //1
     public Usuario toModel() {
-        return new Usuario(login, new SenhaLimpa(senha));
+        return new Usuario(login.toLowerCase(), new SenhaLimpa(senha));
     }
 
 }
