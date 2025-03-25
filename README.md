@@ -229,6 +229,10 @@ Como você faria para que em dev a imagem virasse um link fictício e em produç
 
 10. **Versão do Java**:
     - Java 23 é recente (lançado em setembro de 2024). Considere usar uma versão LTS (ex.: Java 21) para maior suporte e estabilidade em produção.
+
+5. **CORS Configuração**:
+    - A configuração atual usa o padrão do Spring. Especifique origens permitidas explicitamente (ex.: `http.cors().configurationSource(...)`) para maior segurança.
+
 ---
 
 ### **TODO**
@@ -239,9 +243,6 @@ Como você faria para que em dev a imagem virasse um link fictício e em produç
 2. **Expiração e Refresh Token**:
     - Atualmente, só há um token de acesso. Adicione suporte a **refresh tokens** para evitar que o usuário precise relogar após a expiração.
     - Exemplo: Gere um refresh token com expiração maior e um endpoint `/api/auth/refresh`.
-
-5. **CORS Configuração**:
-    - A configuração atual usa o padrão do Spring. Especifique origens permitidas explicitamente (ex.: `http.cors().configurationSource(...)`) para maior segurança.
 
 9. **Documentação**:
     - Integre o Springdoc OpenAPI para gerar documentação automática da API (ex.: Swagger UI).
