@@ -36,10 +36,13 @@ public class SecurityConfiguration {
     public SecurityConfiguration(UsersService usersService, TokenManager tokenManager) {
         this.usersService = usersService;
         this.tokenManager = tokenManager;
+        log.info("SecurityConfiguration inicializada com UsersService e TokenManager.");
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        log.info("Configurando a cadeia de filtros de segurança...");
+
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Ativa CORS com configurações padrões
@@ -47,15 +50,16 @@ public class SecurityConfiguration {
                         session -> session
                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/produtos/{id:[0-9]+}").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/produtos/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/usuarios").permitAll()
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/error").permitAll() // Libera o endpoint /error
-                        .requestMatchers("/h2-console/**").permitAll()
-                        .anyRequest().authenticated()
-                )
+                .authorizeHttpRequests(auth -> {
+                    log.info("Definindo permissões de acesso...");
+                    auth.requestMatchers(HttpMethod.GET, "/produtos/{id:[0-9]+}").permitAll();
+                    auth.requestMatchers(HttpMethod.GET, "/produtos/**").permitAll();
+                    auth.requestMatchers(HttpMethod.POST, "/usuarios").permitAll();
+                    auth.requestMatchers("/api/auth/**").permitAll();
+                    auth.requestMatchers("/error").permitAll();
+                    auth.requestMatchers("/h2-console/**").permitAll();
+                    auth.anyRequest().authenticated();
+                })
                 .addFilterBefore(new JwtAuthenticationFilter(tokenManager, usersService),
                         UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(new JwtAuthenticationEntryPoint()))
@@ -68,10 +72,10 @@ public class SecurityConfiguration {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
+        log.info("Configurando CORS...");
+
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.addAllowedOrigin("https://marketplace-frontend-livid.vercel.app"); // Permite Angular
-        configuration.addAllowedOrigin("https://marketplace-gnq2.onrender.com"); // Permite Render
         configuration.addAllowedOrigin("http://localhost:4200"); // Permite Angular
 
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Métodos permitidos
@@ -80,11 +84,16 @@ public class SecurityConfiguration {
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration); // Aplica a todos os endpoints
+
+        log.info("CORS configurado para permitir origem {}", configuration.getAllowedOrigins());
+
         return source;
     }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+        log.info("Obtendo AuthenticationManager...");
+
         return authConfig.getAuthenticationManager();
     }
 
@@ -95,13 +104,10 @@ public class SecurityConfiguration {
 
     private static class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
-        private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationEntryPoint.class);
-
         @Override
         public void commence(HttpServletRequest request, HttpServletResponse response,
                              AuthenticationException authException) throws IOException {
-            // Log de erro com contexto detalhado
-            logger.error("Acesso não autorizado: ip={}, endpoint={}, method={}, erro={}",
+            log.error("Acesso não autorizado: ip={}, endpoint={}, method={}, erro={}",
                     request.getRemoteAddr(), request.getRequestURI(), request.getMethod(), authException.getMessage());
 
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Você não está autorizado a acessar esse recurso.");

@@ -2,7 +2,6 @@ package com.dmf.marketplace.usuario;
 
 import com.dmf.marketplace.compartilhado.ExcludeFromJacocoGeneratedReport;
 import jakarta.persistence.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.Assert;
 
 import java.time.Instant;
@@ -41,17 +40,6 @@ public class Usuario {
 
     @Deprecated
     public Usuario() {
-    }
-
-    public void atualizarUsuario(String nome, String login) {
-        this.nome = nome;
-        this.login = login;
-        updatedAt = Instant.now();
-//        this.senha = senhaLimpa.hash();
-    }
-
-    public boolean verificarSenha(String senha) {
-        return new BCryptPasswordEncoder().matches(senha, this.senha);
     }
 
     public Long getId() {

@@ -5,16 +5,9 @@ meta {
 }
 
 get {
-  url: http://localhost:8080/usuarios?page=0&size=10&sortBy=login&sortDirection=ASC
+  url: http://localhost:8080/usuarios
   body: json
   auth: none
-}
-
-params:query {
-  page: 0
-  size: 10
-  sortBy: login
-  sortDirection: ASC
 }
 
 headers {
