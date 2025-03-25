@@ -28,7 +28,7 @@ public class ProdutosController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<NovoProdutoResponse> novoProduto(
+    public ResponseEntity<NovoProdutoResponse> criar(
             @RequestBody @Valid NovoProdutoRequest novoProdutoRequest,
             @AuthenticationPrincipal UsuarioLogado usuarioLogado) {
         Produto produto = novoProdutoRequest.toModel(manager, usuarioLogado.get());
@@ -38,7 +38,7 @@ public class ProdutosController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Produto> listaProduto(@PathVariable Long id) {
+    public ResponseEntity<Produto> encontrarPorId(@PathVariable Long id) {
         Produto produto = manager.find(Produto.class, id);
         return ResponseEntity.ok(produto);
     }

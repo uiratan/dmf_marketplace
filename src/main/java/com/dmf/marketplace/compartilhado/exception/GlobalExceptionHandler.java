@@ -18,24 +18,6 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-
-//    @ExceptionHandler(MethodArgumentNotValidException.class)
-//    public ResponseEntity<Map<String, Object>> handleValidationExceptions(MethodArgumentNotValidException ex) {
-//        Map<String, Object> response = new HashMap<>();
-//        response.put("timestamp", LocalDateTime.now());
-//        response.put("status", HttpStatus.BAD_REQUEST.value());
-//        response.put("error", "Bad Request");
-//
-//        List<String> errors = ex.getBindingResult()
-//                .getFieldErrors()
-//                .stream()
-//                .map(error -> error.getField() + ": " + error.getDefaultMessage())
-//                .collect(Collectors.toList());
-//        response.put("errors", errors);
-//
-//        return ResponseEntity.badRequest().body(response);
-//    }
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex, WebRequest request) {
         Map<String, List<String>> errors = new HashMap<>();

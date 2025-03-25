@@ -24,8 +24,6 @@ class NovaCategoriaRequestTest {
         Categoria categoria = request.toModel(manager);
         manager.persist(categoria);
         manager.flush();
-        System.out.println(categoria);
-
         // Assert
         assertNotNull(categoria.getId());
         assertEquals("categoria", categoria.getNome());
@@ -39,7 +37,6 @@ class NovaCategoriaRequestTest {
         Categoria categoriaMae = new Categoria("categoria mae");
         manager.persist(categoriaMae);
         manager.flush();
-        System.out.println(categoriaMae);
 
         NovaCategoriaRequest request = new NovaCategoriaRequest("categoria", categoriaMae.getId());
 
@@ -47,7 +44,6 @@ class NovaCategoriaRequestTest {
         Categoria categoriaFilha = request.toModel(manager);
         manager.persist(categoriaFilha);
         manager.flush();
-        System.out.println(categoriaFilha);
 
         // Assert
         assertNotNull(categoriaFilha.getId());

@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 //2
 @RestController
@@ -23,7 +24,6 @@ public class CategoriaController {
     @Transactional
     //1
     public String criar(@RequestBody @Valid NovaCategoriaRequest request) {
-        System.out.println(request);
         //1
         Categoria categoria = request.toModel(manager);
         manager.persist(categoria);
@@ -34,5 +34,11 @@ public class CategoriaController {
     public ResponseEntity<List<Categoria>> listar() {
         List<Categoria> categorias = manager.createQuery("SELECT c FROM Categoria c", Categoria.class).getResultList();
         return ResponseEntity.ok(categorias);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Categoria> encontrarPorId(@PathVariable Long id) {
+        Optional<Categoria> categoria = Optional.ofNullable(manager.find(Categoria.class, id));
+        return categoria.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

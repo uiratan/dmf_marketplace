@@ -88,4 +88,28 @@ public class ImagensProdutoController {
         }
         return false;
     }
+
+    @GetMapping("/{id}/imagens")
+    public ResponseEntity<List<String>> listar(@PathVariable("id") Long idProduto) {
+        Produto produto = manager.find(Produto.class, idProduto);
+        if (produto == null) {
+            return ResponseEntity.status(404).body(null); // Produto não encontrado
+        }
+        return ResponseEntity.ok(produto.getImagens());
+    }
+
+    @GetMapping("/{id}/imagens/{index}")
+    public ResponseEntity<String> encontrarPorId(@PathVariable("id") Long idProduto, @PathVariable("index") int index) {
+        Produto produto = manager.find(Produto.class, idProduto);
+        if (produto == null) {
+            return ResponseEntity.status(404).body("Produto não encontrado.");
+        }
+
+        List<String> imagens = produto.getImagens();
+        if (index < 0 || index >= imagens.size()) {
+            return ResponseEntity.status(404).body("Imagem não encontrada.");
+        }
+
+        return ResponseEntity.ok(imagens.get(index));
+    }
 }
