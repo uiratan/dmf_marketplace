@@ -1,6 +1,6 @@
 package com.dmf.marketplace.imagens;
 
-import com.dmf.marketplace.compartilhado.ImageUploadService;
+import com.dmf.marketplace.compartilhado.upload.ImageUploadService;
 import com.dmf.marketplace.compartilhado.seguranca.UsuarioLogado;
 import com.dmf.marketplace.produto.Produto;
 import jakarta.persistence.EntityManager;

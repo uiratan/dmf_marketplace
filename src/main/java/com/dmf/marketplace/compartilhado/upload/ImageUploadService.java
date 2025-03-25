@@ -1,4 +1,4 @@
-package com.dmf.marketplace.compartilhado;
+package com.dmf.marketplace.compartilhado.upload;
 
 import org.springframework.web.multipart.MultipartFile;
 

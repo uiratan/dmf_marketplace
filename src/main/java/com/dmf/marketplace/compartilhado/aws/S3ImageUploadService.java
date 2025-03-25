@@ -1,6 +1,6 @@
 package com.dmf.marketplace.compartilhado.aws;
 
-import com.dmf.marketplace.compartilhado.ImageUploadService;
+import com.dmf.marketplace.compartilhado.upload.ImageUploadService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

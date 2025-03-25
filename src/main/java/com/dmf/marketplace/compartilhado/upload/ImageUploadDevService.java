@@ -1,4 +1,4 @@
-package com.dmf.marketplace.compartilhado;
+package com.dmf.marketplace.compartilhado.upload;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Profile({"dev", "test"})
-public class DevImageUploadService implements ImageUploadService {
+public class ImageUploadDevService implements ImageUploadService {
 
     private static final String FAKE_BUCKET_URL = "http://fake-bucket.localhost/";
 
