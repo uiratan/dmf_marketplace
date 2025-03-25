@@ -1,0 +1,15 @@
+meta {
+  name: buscar usuario
+  type: http
+  seq: 3
+}
+
+get {
+  url: http://localhost:8080/usuarios/1
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{auth_token}}
+}

@@ -1,0 +1,30 @@
+meta {
+  name: nova imagem url
+  type: http
+  seq: 12
+}
+
+post {
+  url: http://localhost:8080/produtos/1/imagens-url
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{auth_token}}
+}
+
+body:json {
+  {
+    "imagens": [
+      "https://www.wikiparques.org/images/8/8c/2017935485904.jpg",
+      "https://tm.ibxk.com.br/materias/5866/21577.jpg",
+      "https://kinsta.com/pt/wp-content/uploads/sites/3/2020/10/tipos-de-arquivo-de-imagem.png",
+      "https://kinsta.com/wp-content/uploads/2020/08/raster-image-jpg.jpg",
+      "https://kinsta.com/wp-content/uploads/2020/08/vector-image.jpg",
+      "https://kinsta.com/wp-content/uploads/2020/08/turtle-dancing-gif.gif",
+      "https://kinsta.com/wp-content/uploads/2020/08/bmp-vs-gif.png",
+      "https://kinsta.com/wp-content/uploads/2020/08/1200px-SVG_logo.svg.png"
+    ]
+  }
+}
