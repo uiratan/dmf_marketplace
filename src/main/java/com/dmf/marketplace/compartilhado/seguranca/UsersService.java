@@ -1,5 +1,6 @@
 package com.dmf.marketplace.compartilhado.seguranca;
 
+import com.dmf.marketplace.usuario.UsuarioRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
