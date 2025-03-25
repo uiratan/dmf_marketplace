@@ -22,21 +22,15 @@ import java.util.Date;
 @Component
 public class TokenManager {
 
-	private final String secret;
-	private final long expirationInMillis;
+    private final long expirationInMillis;
 	private final JWK jwk;
 
-	public TokenManager(@Value("${jwt.secret:}") String aSecret, // Valor padrão vazio
-						@Value("${jwt.expiration:900000}") long expirationInMillis) {
+	public TokenManager(@Value("${jwt.expiration:900000}") long expirationInMillis) {
 		this.expirationInMillis = expirationInMillis;
 
 		// Se o secret não for fornecido ou for muito curto, gere um novo
-		if (!StringUtils.hasText(aSecret) || aSecret.length() < 32) { // 32 caracteres é um mínimo razoável para Base64
-			this.secret = generateSecureSecret();
-		} else {
-			this.secret = aSecret;
-		}
-		this.jwk = new OctetSequenceKey.Builder(this.secret.getBytes())
+        String secret = generateSecureSecret();
+		this.jwk = new OctetSequenceKey.Builder(secret.getBytes())
 				.algorithm(JWSAlgorithm.HS256)
 				.build();
 	}
