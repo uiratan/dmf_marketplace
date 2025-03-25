@@ -1,56 +1,60 @@
-package com.dmf.marketplace.opiniao;
+package com.dmf.marketplace.pergunta;
 
 import com.dmf.marketplace.produto.Produto;
 import com.dmf.marketplace.usuario.Usuario;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.time.Instant;
+
 @Entity
-@Table(name = "tb_opiniao")
-public class Opiniao {
+@Table(name = "tb_pergunta")
+public class Pergunta {
 
     @Id @GeneratedValue private Long id;
-    @Min(1) @Max(5) int nota;
+
     @NotBlank String titulo;
-    @NotBlank String descricao;
+    @NotBlank String pergunta;
 
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "consumidor_id")
-    @NotNull Usuario consumidor;
+    @NotNull
+    Usuario consumidor;
 
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "produto_id")
-    @NotNull Produto produto;
+    @NotNull
+    Produto produto;
 
-    public Opiniao(int nota, String titulo, String descricao, Usuario consumidor, Produto produto) {
-        this.nota = nota;
+    @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME(6)")
+    private Instant createdAt;
+
+    public Pergunta(String titulo, String pergunta, Usuario consumidor, Produto produto) {
         this.titulo = titulo;
-        this.descricao = descricao;
+        this.pergunta = pergunta;
         this.consumidor = consumidor;
         this.produto = produto;
+        this.createdAt = Instant.now();
     }
 
     @Deprecated
-    public Opiniao() {}
+    public Pergunta() {}
 
-    public int getNota() {
-        return nota;
+    public Long getId() {
+        return id;
     }
 
     public String getTitulo() {
         return titulo;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public String getPergunta() {
+        return pergunta;
     }
-
 
     public Usuario getConsumidor() {
         return consumidor;
@@ -60,4 +64,7 @@ public class Opiniao {
         return produto;
     }
 
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
 }

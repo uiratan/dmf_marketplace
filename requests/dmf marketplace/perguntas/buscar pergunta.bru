@@ -1,0 +1,15 @@
+meta {
+  name: buscar pergunta
+  type: http
+  seq: 10
+}
+
+get {
+  url: http://localhost:8080/produtos/1/perguntas/5
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{auth_token}}
+}

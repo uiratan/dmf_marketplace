@@ -1,0 +1,23 @@
+meta {
+  name: nova pergunta
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:8080/produtos/1/perguntas
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{auth_token}}
+}
+
+body:json {
+  {
+    "titulo": "Tamanho",
+    "pergunta": "Qual o tamanho exato do produto?"
+  }
+  
+}
