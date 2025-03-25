@@ -1,0 +1,24 @@
+meta {
+  name: nova opiniao erro campos
+  type: http
+  seq: 7
+}
+
+post {
+  url: http://localhost:8080/produtos/100000000/opiniao
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{auth_token}}
+}
+
+body:json {
+  {
+    "nota": "",
+    "titulo": "",
+    "descricao": "Produto excelente, superou minhas expectativas!Produto excelente, superou minhas expectativas!Produto excelente, superou minhas expectativas!Produto excelente, superou minhas expectativas!Produto excelente, superou minhas expectativas!Produto excelente, superou minhas expectativas!Produto excelente, superou minhas expectativas!Produto excelente, superou minhas expectativas!Produto excelente, superou minhas expectativas!Produto excelente, superou minhas expectativas!Produto excelente, superou minhas expectativas!Produto excelente, superou minhas expectativas!Produto excelente, superou minhas expectativas!Produto excelente, superou minhas expectativas!Produto excelente, superou minhas expectativas!Produto excelente, superou minhas expectativas!Produto excelente, superou minhas expectativas!Produto excelente, superou minhas expectativas!Produto excelente, superou minhas expectativas!Produto excelente, superou minhas expectativas!Produto excelente, superou minhas expectativas!"
+  }
+  
+}

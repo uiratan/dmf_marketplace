@@ -1,0 +1,24 @@
+meta {
+  name: nova opiniao2
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8080/produtos/1/opiniao
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{auth_token}}
+}
+
+body:json {
+  {
+    "nota": 4,
+    "titulo": "Bom, mas pode melhorar",
+    "descricao": "Produto bom, mas o acabamento poderia ser melhor. A entrega foi rápida."
+  }
+  
+}

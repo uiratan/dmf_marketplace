@@ -1,0 +1,24 @@
+meta {
+  name: nova opiniao erro produto
+  type: http
+  seq: 8
+}
+
+post {
+  url: http://localhost:8080/produtos/1/opiniao
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{auth_token}}
+}
+
+body:json {
+  {
+    "nota": 5,
+    "titulo": "Maravilhoso!",
+    "descricao": "Produto excelente, superou minhas expectativas!"
+  }
+  
+}
