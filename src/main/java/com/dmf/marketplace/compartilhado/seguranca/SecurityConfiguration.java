@@ -69,12 +69,15 @@ public class SecurityConfiguration {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("https://marketplace-frontend-livid.vercel.app")); // Permite Angular
-        configuration.setAllowedOrigins(List.of("https://marketplace-gnq2.onrender.com")); // Permite Render
-        configuration.setAllowedOrigins(List.of("http://localhost:4200")); // Permite Angular
+
+        configuration.addAllowedOrigin("https://marketplace-frontend-livid.vercel.app"); // Permite Angular
+        configuration.addAllowedOrigin("https://marketplace-gnq2.onrender.com"); // Permite Render
+        configuration.addAllowedOrigin("http://localhost:4200"); // Permite Angular
+
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Métodos permitidos
         configuration.setAllowedHeaders(List.of("*")); // Permite todos os headers
         configuration.setAllowCredentials(true); // Permite envio de cookies (se necessário)
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration); // Aplica a todos os endpoints
         return source;
