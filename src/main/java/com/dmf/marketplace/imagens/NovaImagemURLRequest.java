@@ -1,4 +1,4 @@
-package com.dmf.marketplace.produto;
+package com.dmf.marketplace.imagens;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

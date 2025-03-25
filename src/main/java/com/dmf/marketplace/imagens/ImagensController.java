@@ -1,7 +1,8 @@
-package com.dmf.marketplace.produto;
+package com.dmf.marketplace.imagens;
 
 import com.dmf.marketplace.compartilhado.ImageUploadService;
 import com.dmf.marketplace.compartilhado.seguranca.UsuarioLogado;
+import com.dmf.marketplace.produto.Produto;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -16,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/produtos")
-public class ImagensProdutoController {
+public class ImagensController {
 
     @PersistenceContext
     private EntityManager manager;
