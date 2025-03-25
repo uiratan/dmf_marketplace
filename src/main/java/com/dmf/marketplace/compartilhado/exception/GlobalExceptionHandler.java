@@ -1,5 +1,6 @@
 package com.dmf.marketplace.compartilhado.exception;
 
+import jakarta.persistence.TransactionRequiredException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -14,7 +15,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -40,18 +40,33 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
-    public ResponseEntity<ErrorResponse> handleNotAcceptableException(HttpMediaTypeNotAcceptableException ex, WebRequest request) {
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleInternalServerError(Exception ex, WebRequest request) {
+        String message = getMessage(ex);
+
         ErrorResponse errorResponse = new ErrorResponse(
-                HttpStatus.NOT_ACCEPTABLE.value(),
-                HttpStatus.NOT_ACCEPTABLE.getReasonPhrase(),
-                "O formato de resposta solicitado não é suportado pelo servidor. Verifique se sua entidade de resposta do ResponseEntity está correta.",
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
+                message,
                 LocalDateTime.now(),
                 null,
                 request.getDescription(false).replace("uri=", "")
         );
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_ACCEPTABLE);
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    private static String getMessage(Exception ex) {
+        String message = "Erro interno do servidor.";
+        if (ex instanceof HttpMediaTypeNotAcceptableException) {
+            message = "O formato de resposta solicitado não é suportado pelo servidor. Verifique se sua entidade de resposta do ResponseEntity está correta.";
+        } else if (ex instanceof TransactionRequiredException) {
+            message = "Erro interno do servidor: Não há uma transação ativa para a operação de persistência.";
+        }
+
+        message = message + " (<<< " + ex.getMessage() + " >>>)";
+        return message;
+    }
+
 
 }
