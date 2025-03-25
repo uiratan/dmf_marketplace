@@ -46,10 +46,38 @@ public class PerguntaController {
         Pergunta pergunta = request.toModel(manager, produto, consumidor);
         manager.persist(pergunta);
 
-        // Envia o "e-mail" (print no console)
-        emailService.enviarEmailNovaPergunta(pergunta);
+        EmailNovaPergunta result = getEmailNovaPergunta(pergunta);
+        emailService.enviarEmail(result.destinatario(), result.assunto(), result.corpo());
 
         return this.listar();
+    }
+
+    private EmailNovaPergunta getEmailNovaPergunta(Pergunta pergunta) {
+        String destinatario = pergunta.getProduto().getUsuario().getLogin();
+        String assunto = "Nova pergunta sobre seu produto: " + pergunta.getProduto().getNome();
+        String corpo = """
+                Olá %s,
+
+                Você recebeu uma nova pergunta sobre seu produto "%s":
+
+                Pergunta: "%s"
+
+                Acesse o link abaixo para visualizar e responder a pergunta:
+                http://localhost:8080/produtos/%d/perguntas/%d
+
+                Atenciosamente,
+                Equipe Marketplace
+                """.formatted(
+                destinatario,
+                pergunta.getProduto().getNome(),
+                pergunta.getPergunta(),
+                pergunta.getProduto().getId(),
+                pergunta.getId()
+        );
+        return new EmailNovaPergunta(destinatario, assunto, corpo);
+    }
+
+    private record EmailNovaPergunta(String destinatario, String assunto, String corpo) {
     }
 
     @GetMapping
@@ -78,8 +106,3 @@ public class PerguntaController {
         return pergunta.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
-
-/*
-* O vendedor recebe um email com a pergunta nova e o link para a página de visualização do produto(ainda vai existir)
-* O email não precisa ser de verdade. Pode ser apenas um print no console do servidor com o corpo.
- */
