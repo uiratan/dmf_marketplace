@@ -10,7 +10,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-@Profile("dev")
+@Profile({"dev", "test"})
 public class DevImageUploadService implements ImageUploadService {
 
     private static final String FAKE_BUCKET_URL = "http://fake-bucket.localhost/";
