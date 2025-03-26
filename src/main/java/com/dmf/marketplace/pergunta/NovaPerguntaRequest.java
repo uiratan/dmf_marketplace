@@ -6,13 +6,12 @@ import jakarta.persistence.EntityManager;
 import jakarta.validation.constraints.NotBlank;
 
 public record NovaPerguntaRequest(
-        @NotBlank String titulo,
-        @NotBlank String pergunta
+        @NotBlank String titulo
 ) {
     public Pergunta toModel(
             EntityManager manager,
             Produto produto,
             Usuario consumidor) {
-        return new Pergunta(titulo, pergunta, consumidor, produto);
+        return new Pergunta(titulo, consumidor, produto);
     }
 }

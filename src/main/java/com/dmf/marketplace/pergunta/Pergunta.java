@@ -17,7 +17,6 @@ public class Pergunta {
     @Id @GeneratedValue private Long id;
 
     @NotBlank String titulo;
-    @NotBlank String pergunta;
 
     @JsonBackReference
     @ManyToOne
@@ -34,9 +33,8 @@ public class Pergunta {
     @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME(6)")
     private Instant createdAt;
 
-    public Pergunta(String titulo, String pergunta, Usuario consumidor, Produto produto) {
+    public Pergunta(String titulo, Usuario consumidor, Produto produto) {
         this.titulo = titulo;
-        this.pergunta = pergunta;
         this.consumidor = consumidor;
         this.produto = produto;
         this.createdAt = Instant.now();
@@ -51,10 +49,6 @@ public class Pergunta {
 
     public String getTitulo() {
         return titulo;
-    }
-
-    public String getPergunta() {
-        return pergunta;
     }
 
     public Usuario getConsumidor() {

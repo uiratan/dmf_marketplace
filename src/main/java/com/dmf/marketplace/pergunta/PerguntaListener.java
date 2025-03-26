@@ -37,7 +37,7 @@ public class PerguntaListener {
                 """.formatted(
                 destinatarioNome,
                 pergunta.getProduto().getNome(),
-                pergunta.getPergunta(),
+                pergunta.getTitulo(),
                 pergunta.getProduto().getId(),
                 pergunta.getId()
         );
