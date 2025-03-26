@@ -40,5 +40,21 @@ public class SesService implements MailerService {
         }
     }
 
+    /**
+     * Método para remover uma identidade do AWS SES (pode ser um e-mail ou domínio).
+     * @param identity Identidade a ser removida (exemplo: "email@dominio.com" ou "dominio.com").
+     */
+    public void deleteIdentity(String identity) {
+        try {
+            DeleteIdentityRequest deleteRequest = DeleteIdentityRequest.builder()
+                    .identity(identity)
+                    .build();
+            sesClient.deleteIdentity(deleteRequest);
+            System.out.println("✅ Identidade removida do SES: " + identity);
+        } catch (SesException e) {
+            System.err.println("❌ Falha ao remover identidade: " + e.getMessage());
+        }
+    }
+
 
 }

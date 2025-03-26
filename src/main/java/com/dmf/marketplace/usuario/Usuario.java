@@ -71,13 +71,13 @@ public class Usuario {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Usuario usuario = (Usuario) o;
-        return Objects.equals(id, usuario.id);
+        return Objects.equals(getLogin(), usuario.getLogin());
     }
 
     @ExcludeFromJacocoGeneratedReport
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getLogin());
     }
 
     @ExcludeFromJacocoGeneratedReport

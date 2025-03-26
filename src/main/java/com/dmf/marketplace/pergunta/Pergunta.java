@@ -1,5 +1,6 @@
 package com.dmf.marketplace.pergunta;
 
+import com.dmf.marketplace.compartilhado.ExcludeFromJacocoGeneratedReport;
 import com.dmf.marketplace.produto.Produto;
 import com.dmf.marketplace.usuario.Usuario;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -8,11 +9,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.Instant;
+import java.util.Objects;
 
 @Entity
 @Table(name = "tb_pergunta")
-@EntityListeners(Emails.class)
-public class Pergunta {
+public class Pergunta implements Comparable<Pergunta> {
 
     @Id @GeneratedValue private Long id;
 
@@ -22,7 +23,7 @@ public class Pergunta {
     @ManyToOne
     @JoinColumn(name = "consumidor_id")
     @NotNull
-    Usuario consumidor;
+    Usuario interessado;
 
     @JsonBackReference
     @ManyToOne
@@ -33,9 +34,9 @@ public class Pergunta {
     @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME(6)")
     private Instant createdAt;
 
-    public Pergunta(String titulo, Usuario consumidor, Produto produto) {
+    public Pergunta(String titulo, Usuario interessado, Produto produto) {
         this.titulo = titulo;
-        this.consumidor = consumidor;
+        this.interessado = interessado;
         this.produto = produto;
         this.createdAt = Instant.now();
     }
@@ -51,8 +52,8 @@ public class Pergunta {
         return titulo;
     }
 
-    public Usuario getConsumidor() {
-        return consumidor;
+    public Usuario getInteressado() {
+        return interessado;
     }
 
     public Produto getProduto() {
@@ -61,5 +62,24 @@ public class Pergunta {
 
     public Instant getCreatedAt() {
         return createdAt;
+    }
+
+    @ExcludeFromJacocoGeneratedReport
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Pergunta pergunta = (Pergunta) o;
+        return Objects.equals(getTitulo(), pergunta.getTitulo()) && Objects.equals(getInteressado(), pergunta.getInteressado());
+    }
+
+    @ExcludeFromJacocoGeneratedReport
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTitulo(), getInteressado());
+    }
+
+    @Override
+    public int compareTo(Pergunta o) {
+        return this.titulo.compareTo(o.titulo);
     }
 }

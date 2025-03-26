@@ -38,9 +38,12 @@ public class ProdutosController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Produto> encontrarPorId(@PathVariable Long id) {
+    public ResponseEntity<DetalhesProduto> encontrarPorId(@PathVariable Long id) {
         Produto produto = manager.find(Produto.class, id);
-        return ResponseEntity.ok(produto);
+
+        DetalhesProduto detalhesProduto = new DetalhesProduto(produto);
+
+        return ResponseEntity.ok(detalhesProduto);
     }
 
     @GetMapping
