@@ -9,7 +9,8 @@ import org.springframework.stereotype.Service;
 public class EmailDevService implements EmailService {
 
     public void enviarEmail(String destinatario, String assunto, String corpo) {
-        // Simulação do envio de e-mail
+        System.out.println("Simulação do envio de e-mail");
+
         System.out.println("------ E-MAIL ENVIADO ------");
         System.out.println("Para: " + destinatario);
         System.out.println("Assunto: " + assunto);

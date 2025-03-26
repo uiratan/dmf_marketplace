@@ -46,36 +46,7 @@ public class PerguntaController {
         Pergunta pergunta = request.toModel(manager, produto, consumidor);
         manager.persist(pergunta);
 
-        enviarPerguntaPorEmail(pergunta);
-
         return this.listar();
-    }
-
-    private void enviarPerguntaPorEmail(Pergunta pergunta) {
-        String destinatarioEmail = pergunta.getProduto().getDono().getLogin();
-        String destinatarioNome = pergunta.getProduto().getDono().getLogin(); // atualizar para nome quando implementar
-        String assunto = "Nova pergunta sobre seu produto: " + pergunta.getProduto().getNome();
-        String corpo = """
-                Olá %s,
-
-                Você recebeu uma nova pergunta sobre seu produto "%s":
-
-                Pergunta: "%s"
-
-                Acesse o link abaixo para visualizar e responder a pergunta:
-                http://localhost:8080/produtos/%d/perguntas/%d
-
-                Atenciosamente,
-                Equipe Marketplace
-                """.formatted(
-                destinatarioNome,
-                pergunta.getProduto().getNome(),
-                pergunta.getPergunta(),
-                pergunta.getProduto().getId(),
-                pergunta.getId()
-        );
-
-        emailService.enviarEmail(destinatarioEmail, assunto, corpo);
     }
 
     @GetMapping

@@ -19,38 +19,9 @@ public class SesService implements EmailService {
     @Value("${cloud.aws.ses.sender-email}")
     private String senderEmail;
 
-    public void enviarEmailNovaPergunta(Pergunta pergunta) {
-        String destinatario = pergunta.getProduto().getDono().getLogin();
-
-        String assunto = "Nova Pergunta sobre o produto " + pergunta.getProduto().getNome();
-
-        String corpo = """
-                Olá %s,
-
-                Você recebeu uma nova pergunta sobre seu produto "%s":
-
-                Pergunta: "%s"
-
-                Acesse o link abaixo para visualizar e responder a pergunta:
-                http://localhost:8080/produtos/%d/perguntas/%d
-
-                Atenciosamente,
-                Equipe Marketplace
-                """.formatted(
-                destinatario,
-                pergunta.getProduto().getNome(),
-                pergunta.getPergunta(),
-                pergunta.getProduto().getId(),
-                pergunta.getId()
-        );
-
-        enviarEmail(destinatario, assunto, corpo);
-
-
-    }
-
-
     public void enviarEmail(String destinatario, String assunto, String corpo) {
+        System.out.println("Enviando email via AWS SES");
+
         SendEmailRequest emailRequest = SendEmailRequest.builder()
                 .destination(Destination.builder().toAddresses(destinatario).build())
                 .message(Message.builder()
