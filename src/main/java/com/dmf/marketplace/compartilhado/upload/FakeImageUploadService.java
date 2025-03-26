@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Profile({"dev", "test"})
-public class ImageUploadDevService implements ImageUploadService {
+public class FakeImageUploadService implements ImageUploadService {
 
     private static final String FAKE_BUCKET_URL = "http://fake-bucket.localhost/";
 

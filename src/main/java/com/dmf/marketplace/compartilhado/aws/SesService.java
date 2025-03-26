@@ -1,7 +1,6 @@
 package com.dmf.marketplace.compartilhado.aws;
 
-import com.dmf.marketplace.compartilhado.email.EmailService;
-import com.dmf.marketplace.pergunta.Pergunta;
+import com.dmf.marketplace.compartilhado.email.MailerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
@@ -11,7 +10,7 @@ import software.amazon.awssdk.services.ses.model.*;
 
 @Service
 @Profile("prod")
-public class SesService implements EmailService {
+public class SesService implements MailerService {
 
     @Autowired
     private SesClient sesClient;
@@ -19,7 +18,7 @@ public class SesService implements EmailService {
     @Value("${cloud.aws.ses.sender-email}")
     private String senderEmail;
 
-    public void enviarEmail(String destinatario, String assunto, String corpo) {
+    public void send(String destinatario, String assunto, String corpo) {
         System.out.println("Enviando email via AWS SES");
 
         SendEmailRequest emailRequest = SendEmailRequest.builder()

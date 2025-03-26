@@ -11,7 +11,7 @@ import java.time.Instant;
 
 @Entity
 @Table(name = "tb_pergunta")
-@EntityListeners(PerguntaListener.class)
+@EntityListeners(Emails.class)
 public class Pergunta {
 
     @Id @GeneratedValue private Long id;

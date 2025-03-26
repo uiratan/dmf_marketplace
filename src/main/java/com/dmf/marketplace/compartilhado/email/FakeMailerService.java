@@ -1,14 +1,13 @@
 package com.dmf.marketplace.compartilhado.email;
 
-import com.dmf.marketplace.pergunta.Pergunta;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Service
 @Profile({"dev", "test"})
-public class EmailDevService implements EmailService {
+public class FakeMailerService implements MailerService {
 
-    public void enviarEmail(String destinatario, String assunto, String corpo) {
+    public void send(String destinatario, String assunto, String corpo) {
         System.out.println("Simulação do envio de e-mail");
 
         System.out.println("------ E-MAIL ENVIADO ------");

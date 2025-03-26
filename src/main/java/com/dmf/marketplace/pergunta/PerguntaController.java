@@ -1,6 +1,5 @@
 package com.dmf.marketplace.pergunta;
 
-import com.dmf.marketplace.compartilhado.email.EmailService;
 import com.dmf.marketplace.compartilhado.seguranca.UsuarioLogado;
 import com.dmf.marketplace.produto.Produto;
 import com.dmf.marketplace.usuario.Usuario;
@@ -24,7 +23,7 @@ public class PerguntaController {
     private EntityManager manager;
 
     @Autowired
-    private EmailService emailService;
+    private Emails emails;
 
     @PostMapping
     @Transactional
@@ -45,6 +44,8 @@ public class PerguntaController {
 
         Pergunta pergunta = request.toModel(manager, produto, consumidor);
         manager.persist(pergunta);
+
+        emails.enviarPerguntaPorEmail(pergunta);
 
         return this.listar();
     }

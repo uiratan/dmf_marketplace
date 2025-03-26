@@ -1,23 +1,17 @@
 package com.dmf.marketplace.pergunta;
 
-import com.dmf.marketplace.compartilhado.email.EmailService;
-import jakarta.persistence.PostPersist;
+import com.dmf.marketplace.compartilhado.email.MailerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
-public class PerguntaListener {
+@Service
+public class Emails {
 
     @Autowired
-    private EmailService emailService;
+    private MailerService mailerService;
 
-    @PostPersist
-    public void enviarEmailNovaPergunta(Pergunta pergunta) {
-        enviarPerguntaPorEmail(pergunta);
-    }
-
-    private void enviarPerguntaPorEmail(Pergunta pergunta) {
-        System.out.println("Executando PerguntaListener");
+    public void enviarPerguntaPorEmail(Pergunta pergunta) {
+        System.out.println("Enviando Email");
 
         String destinatarioEmail = pergunta.getProduto().getDono().getLogin();
         String destinatarioNome = pergunta.getProduto().getDono().getLogin(); // atualizar para nome quando implementar
@@ -42,6 +36,6 @@ public class PerguntaListener {
                 pergunta.getId()
         );
 
-        emailService.enviarEmail(destinatarioEmail, assunto, corpo);
+        mailerService.send(destinatarioEmail, assunto, corpo);
     }
 }
