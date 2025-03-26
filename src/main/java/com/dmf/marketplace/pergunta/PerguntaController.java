@@ -46,14 +46,14 @@ public class PerguntaController {
         Pergunta pergunta = request.toModel(manager, produto, consumidor);
         manager.persist(pergunta);
 
-        EmailNovaPergunta result = getEmailNovaPergunta(pergunta);
-        emailService.enviarEmail(result.destinatario(), result.assunto(), result.corpo());
+        enviarPerguntaPorEmail(pergunta);
 
         return this.listar();
     }
 
-    private EmailNovaPergunta getEmailNovaPergunta(Pergunta pergunta) {
-        String destinatario = pergunta.getProduto().getUsuario().getLogin();
+    private void enviarPerguntaPorEmail(Pergunta pergunta) {
+        String destinatarioEmail = pergunta.getProduto().getDono().getLogin();
+        String destinatarioNome = pergunta.getProduto().getDono().getLogin(); // atualizar para nome quando implementar
         String assunto = "Nova pergunta sobre seu produto: " + pergunta.getProduto().getNome();
         String corpo = """
                 Olá %s,
@@ -68,16 +68,14 @@ public class PerguntaController {
                 Atenciosamente,
                 Equipe Marketplace
                 """.formatted(
-                destinatario,
+                destinatarioNome,
                 pergunta.getProduto().getNome(),
                 pergunta.getPergunta(),
                 pergunta.getProduto().getId(),
                 pergunta.getId()
         );
-        return new EmailNovaPergunta(destinatario, assunto, corpo);
-    }
 
-    private record EmailNovaPergunta(String destinatario, String assunto, String corpo) {
+        emailService.enviarEmail(destinatarioEmail, assunto, corpo);
     }
 
     @GetMapping

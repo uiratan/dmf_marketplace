@@ -26,7 +26,7 @@ public record NovoProdutoResponse(
                         .toList(),
                 produto.getDescricao(),
                 produto.getCategoria().getId(),
-                produto.getUsuario().getId()
+                produto.getDono().getId()
         );
     }
 }

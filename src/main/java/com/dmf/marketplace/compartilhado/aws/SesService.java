@@ -20,7 +20,7 @@ public class SesService implements EmailService {
     private String senderEmail;
 
     public void enviarEmailNovaPergunta(Pergunta pergunta) {
-        String destinatario = pergunta.getProduto().getUsuario().getLogin();
+        String destinatario = pergunta.getProduto().getDono().getLogin();
 
         String assunto = "Nova Pergunta sobre o produto " + pergunta.getProduto().getNome();
 

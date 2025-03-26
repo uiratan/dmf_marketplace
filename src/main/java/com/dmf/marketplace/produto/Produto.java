@@ -47,7 +47,7 @@ public class Produto {
     //1
     @ManyToOne
     @JoinColumn(name = "usuario_id")
-    private Usuario usuario;
+    private Usuario dono;
 
     @ElementCollection // Para uma tabela separada de imagens
     @Column(name = "imagem_url")
@@ -60,7 +60,7 @@ public class Produto {
             final Set<CaracteristicaProduto> caracteristicas,
             final String descricao,
             final Categoria categoria,
-            final Usuario usuario) {
+            final Usuario dono) {
         Assert.hasText(nome, "Nome não pode ser nulo ou vazio");
         Assert.notNull(valor, "Valor não pode ser nulo");
         Assert.isTrue(valor.compareTo(BigDecimal.ZERO) > 0, "Valor deve ser maior que zero");
@@ -69,14 +69,14 @@ public class Produto {
         Assert.notNull(caracteristicas, "Lista de características não pode ser nula");
         Assert.hasText(descricao, "Descrição não pode ser nula ou vazia");
         Assert.notNull(categoria, "Categoria não pode ser nula");
-        Assert.notNull(usuario, "Usuário não pode ser nulo");
+        Assert.notNull(dono, "Usuário não pode ser nulo");
 
         this.nome = nome;
         this.valor = valor;
         this.quantidadeEstoque = quantidadeEstoque;
         this.descricao = descricao;
         this.categoria = categoria;
-        this.usuario = usuario;
+        this.dono = dono;
         this.caracteristicas.addAll(caracteristicas);
         associaCaracteristicas(); // Associa o Produto às características
     }
@@ -86,7 +86,7 @@ public class Produto {
     }
 
     public boolean pertenceAoUsuario(Usuario usuario) {
-        return this.usuario.equals(usuario);
+        return this.dono.equals(usuario);
     }
 
     // Método para associar o Produto às características
@@ -146,8 +146,8 @@ public class Produto {
         return Objects.hashCode(id);
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public Usuario getDono() {
+        return dono;
     }
 
     @Override
@@ -160,7 +160,7 @@ public class Produto {
                 ", descricao='" + descricao + '\'' +
                 ", caracteristicas=" + caracteristicas +
                 ", categoria=" + categoria +
-                ", usuario=" + usuario +
+                ", usuario=" + dono +
                 ", imagens=" + imagens +
                 '}';
     }

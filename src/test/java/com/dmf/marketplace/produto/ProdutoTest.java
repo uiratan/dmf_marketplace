@@ -48,7 +48,7 @@ class ProdutoTest {
         assertThat(produto.getQuantidadeEstoque()).isEqualTo(10);
         assertThat(produto.getCaracteristicas()).hasSize(3);
         assertThat(produto.getCategoria()).isEqualTo(categoria);
-        assertThat(produto.getUsuario()).isEqualTo(usuario);
+        assertThat(produto.getDono()).isEqualTo(usuario);
     }
 
     @Test
