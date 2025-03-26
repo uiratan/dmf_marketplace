@@ -1,0 +1,19 @@
+meta {
+  name: nova pergunta2
+  type: http
+  seq: 24
+}
+
+post {
+  url: http://localhost:8080/produtos/1/perguntas
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{auth_token}}
+}
+
+body:json {
+    { "titulo": "Qual o material principal do produto?" }
+}

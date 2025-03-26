@@ -1,0 +1,24 @@
+meta {
+  name: nova opiniao61
+  type: http
+  seq: 22
+}
+
+post {
+  url: http://localhost:8080/produtos/1/opiniao
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{auth_token}}
+}
+
+body:json {
+  {
+    "nota": 5,
+    "titulo": "Perfeito!",
+    "descricao": "Produto de excelente qualidade, muito acima das minhas expectativas. Super recomendo!"
+  }
+  
+}
