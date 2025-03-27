@@ -263,6 +263,36 @@ Não temos todas as informações, mas já temos bastante coisa. Faça, do jeito
 - Opiniões sobre o produto
 - Perguntas para aquele produto
 
+# 10. Finaliza compra - parte 1
+Aqui a gente vai simular uma integração com um gateway como paypal, pagseguro etc. O fluxo geralmente é o seguinte:
+- O sistema registra uma nova compra e gera um identificador de compra que pode ser passado como argumento para o gateway.
+- O cliente efetua o pagamento no gateway
+- O gateway invoca uma url do sistema passando o identificador de compra do próprio sistema e as informações relativas a transação em si.
+- Então essa é a parte 1 do processo de finalização de compra. Onde apenas geramos a compra no sistema. Não precisamos da noção de um carrinho compra. Apenas temos o usuário logado comprando um produto.
+
+## Necessidades
+- A pessoa pode escolher a quantidade de itens daquele produto que ela quer comprar
+- O estoque do produto é abatido
+- Um email é enviado para a pessoa que é dona(o) do produto informando que um usuário realmente disse que queria comprar seu produto.
+- Uma compra é gerada informando o status INICIADA e com as seguintes informações:
+  - gateway escolhido para pagamento
+  - produto escolhido
+  - quantidade
+  - comprador(a)
+- Suponha que o cliente pode escolher entre pagar com o Paypal ou Pagseguro.
+
+## Restrições
+- A quantidade é obrigatória
+- A quantidade é positiva
+- Precisa ter estoque para realizar a compra​
+
+## Resultado esperado
+- Caso a pessoa escolha o paypal seu endpoint deve gerar o seguinte redirect(302):
+  - Retorne o endereço da seguinte maneira: paypal.com/{idGeradoDaCompra}?redirectUrl={urlRetornoAppPosPagamento}
+- Caso a pessoa escolha o pagseguro o seu endpoint deve gerar o seguinte redirect(302):
+    - Retorne o endereço da seguinte maneira: pagseguro.com?returnId={idGeradoDaCompra}&redirectUrl={urlRetornoAppPosPagamento}
+- Caso aconteça alguma restrição retorne um status 400 informando os problemas.
+
 # **Melhorias**
 
 1. **Segurança do Token JWT**:

@@ -175,4 +175,13 @@ public class Produto {
     }
 
 
+    public void abaterEstoque(Integer quantidade) {
+        this.quantidadeEstoque -= quantidade;
+    }
+
+    public void confereEstoque(@NotNull @Positive Integer quantidade) {
+        if (quantidade > this.quantidadeEstoque) {
+            throw new IllegalArgumentException("Quantidade em estoque insuficiente");
+        }
+    }
 }

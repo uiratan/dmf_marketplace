@@ -1,6 +1,9 @@
-package com.dmf.marketplace.pergunta;
+package com.dmf.marketplace.compartilhado.email;
 
-import com.dmf.marketplace.compartilhado.email.MailerService;
+import com.dmf.marketplace.compra.Compra;
+import com.dmf.marketplace.compra.NovaCompraRequest;
+import com.dmf.marketplace.pergunta.Pergunta;
+import com.dmf.marketplace.produto.Produto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +37,34 @@ public class Emails {
                 pergunta.getTitulo(),
                 pergunta.getProduto().getId(),
                 pergunta.getId()
+        );
+
+        mailerService.send(destinatarioEmail, assunto, corpo);
+    }
+
+    public void enviarCompra(Compra compra) {
+        System.out.println("Enviando Email");
+
+        String destinatarioEmail = compra.getProduto().getDono().getLogin();
+        String destinatarioNome = compra.getProduto().getDono().getLogin();
+        String assunto = "Uma compra foi registrada para o seu produto!";
+        String corpo = """
+                Olá %s,
+
+                Seu produto foi vendido com sucesso!
+
+                Detalhes da compra:
+                Produto: %s
+                Quantidade: %d
+                Valor total: R$ %.2f
+
+                Atenciosamente,
+                Equipe Marketplace
+                """.formatted(
+                destinatarioNome,
+                compra.getProduto().getNome(),
+                compra.getQuantidade(),
+                compra.getQuantidade() * compra.getProduto().getValor().doubleValue()
         );
 
         mailerService.send(destinatarioEmail, assunto, corpo);

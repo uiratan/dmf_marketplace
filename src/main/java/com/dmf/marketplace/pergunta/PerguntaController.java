@@ -1,5 +1,6 @@
 package com.dmf.marketplace.pergunta;
 
+import com.dmf.marketplace.compartilhado.email.Emails;
 import com.dmf.marketplace.compartilhado.seguranca.UsuarioLogado;
 import com.dmf.marketplace.produto.Produto;
 import com.dmf.marketplace.usuario.Usuario;

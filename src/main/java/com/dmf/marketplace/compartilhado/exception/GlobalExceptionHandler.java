@@ -40,6 +40,22 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(Exception ex, WebRequest request) {
+        String message = getMessage(ex);
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                message,
+                LocalDateTime.now(),
+                null,
+                request.getDescription(false).replace("uri=", "")
+        );
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleInternalServerError(Exception ex, WebRequest request) {
         String message = getMessage(ex);
@@ -62,11 +78,12 @@ public class GlobalExceptionHandler {
             message = "O formato de resposta solicitado não é suportado pelo servidor. Verifique se sua entidade de resposta do ResponseEntity está correta.";
         } else if (ex instanceof TransactionRequiredException) {
             message = "Erro interno do servidor: Não há uma transação ativa para a operação de persistência.";
+        } else if (ex instanceof IllegalArgumentException) {
+            message = "Erro de validação nos campos informados.";
         }
 
         message = message + " (<<< " + ex.getMessage() + " >>>)";
         return message;
     }
-
 
 }
