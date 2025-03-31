@@ -34,9 +34,21 @@ public class CompraController {
         Compra compra = request.toModel(manager, usuarioLogado.get());
         manager.persist(compra);
 
+        System.out.println("------ DADOS DA COMPRA GERADOS ------");
+        System.out.println("Compra: " + compra.getId());
+        System.out.println("Status: " + compra.getStatus());
+        System.out.println("Gateway: " + compra.getGatewayPagamento());
+        System.out.println("Produto: " + compra.getProduto().getNome());
+        System.out.println("Quantidade: " + compra.getQuantidade());
+        System.out.println("Vendedor: " + compra.getProduto().getDono().getLogin());
+        System.out.println("Comprador: " + compra.getComprador().getLogin());
+
         emails.enviarCompra(compra);
 
+        System.out.println("Gerando URL de pagamento para a compra: " + compra.getId());
         String urlPagamento = compra.gerarUrlPagamento();
+        System.out.println("URL de pagamento gerada: " + urlPagamento);
+
         System.out.println("Redirecionando o comprador para a URL de pagamento: " + urlPagamento);
         System.out.println("Pagamento efetuado com sucesso!");
         System.out.println("Redirecionando o comprador para a URL do sistema: " + compra.gerarUrlRetorno());
@@ -50,7 +62,8 @@ public class CompraController {
     public NovaCompraResponse success(@PathVariable UUID idCompra) {
         System.out.println("Redirecionado com sucesso para a URL do sistema: " + idCompra);
         System.out.println("Compra finalizada com sucesso!");
-        return new NovaCompraResponse(manager.find(Compra.class, idCompra));
+        NovaCompraResponse response = new NovaCompraResponse(manager.find(Compra.class, idCompra));
+        return response;
     }
 }
 

@@ -57,10 +57,7 @@ public class Compra {
     }
 
     public String gerarUrlPagamento() {
-        System.out.println("Gerando URL de pagamento para a compra: " + id);
-        String urlPagamento = gatewayPagamento.gerarUrlPagamento(id, gerarUrlRetorno());
-        System.out.println("URL de pagamento gerada: " + urlPagamento);
-        return urlPagamento;
+        return gatewayPagamento.gerarUrlPagamento(id, gerarUrlRetorno());
     }
 
     public String gerarUrlRetorno() {

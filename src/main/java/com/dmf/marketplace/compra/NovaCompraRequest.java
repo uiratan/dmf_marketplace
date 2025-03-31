@@ -32,17 +32,6 @@ public class NovaCompraRequest {
                 produto,
                 this.quantidade,
                 comprador);
-
-        System.out.println("------ DADOS DA COMPRA GERADOS ------");
-        System.out.println("Compra: " + compra.getId());
-        System.out.println("Status: " + compra.getStatus());
-        System.out.println("Gateway: " + compra.getGatewayPagamento());
-        System.out.println("Produto: " + compra.getProduto().getNome());
-        System.out.println("Quantidade: " + compra.getQuantidade());
-
-        System.out.println("Vendedor: " + produto.getDono().getLogin());
-        System.out.println("Comprador: " + comprador.getLogin());
-
         return compra;
     }
 }
