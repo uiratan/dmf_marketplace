@@ -46,7 +46,7 @@ public class PerguntaController {
         Pergunta pergunta = request.toModel(manager, produto, consumidor);
         manager.persist(pergunta);
 
-        emails.enviarPerguntaPorEmail(pergunta);
+        emails.novaPerguntaPorEmail(pergunta);
 
         return this.listar();
     }

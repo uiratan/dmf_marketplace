@@ -1,9 +1,7 @@
 package com.dmf.marketplace.compartilhado.email;
 
 import com.dmf.marketplace.compra.Compra;
-import com.dmf.marketplace.compra.NovaCompraRequest;
 import com.dmf.marketplace.pergunta.Pergunta;
-import com.dmf.marketplace.produto.Produto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +11,7 @@ public class Emails {
     @Autowired
     private MailerService mailerService;
 
-    public void enviarPerguntaPorEmail(Pergunta pergunta) {
+    public void novaPerguntaPorEmail(Pergunta pergunta) {
         System.out.println("Enviando Email");
 
         String destinatarioEmail = pergunta.getProduto().getDono().getLogin();
@@ -42,7 +40,7 @@ public class Emails {
         mailerService.send(destinatarioEmail, assunto, corpo);
     }
 
-    public void enviarCompra(Compra compra) {
+    public void novaCompra(Compra compra) {
         System.out.println("Enviando Email");
 
         String destinatarioEmail = compra.getProduto().getDono().getLogin();

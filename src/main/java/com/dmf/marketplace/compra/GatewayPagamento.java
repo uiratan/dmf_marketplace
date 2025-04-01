@@ -1,24 +1,34 @@
 package com.dmf.marketplace.compra;
 
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
+
 import java.util.Arrays;
-import java.util.UUID;
 
 public enum GatewayPagamento {
-    PAYPAL {
+    PAGSEGURO {
         @Override
-        public String gerarUrlPagamento(UUID idCompra, String urlRetorno) {
-            return String.format("https://paypal.com/%s?redirectUrl=%s", idCompra, urlRetorno);
+        public String criaUrlRetorno(Compra compra, UriComponentsBuilder uriComponentsBuilder) {
+            UriComponents urlRetornoPagseguro = uriComponentsBuilder
+                    .path("retorno-pagseguro/{idCompra}")
+                    .buildAndExpand(compra.getId().toString());
+
+            return String.format("pagseguro.com/%s?redirectUrl=%s", compra.getId(), urlRetornoPagseguro);
         }
     },
 
-    PAGSEGURO {
+    PAYPAL {
         @Override
-        public String gerarUrlPagamento(UUID idCompra, String urlRetorno) {
-            return String.format("https://pagseguro.com?returnId=%s&redirectUrl=%s", idCompra, urlRetorno);
+        public String criaUrlRetorno(Compra compra, UriComponentsBuilder uriComponentsBuilder) {
+            UriComponents urlRetornoPayPal = uriComponentsBuilder
+                    .path("retorno-paypal/{idCompra}")
+                    .buildAndExpand(compra.getId().toString());
+
+            return String.format("paypal.com/%s?redirectUrl=%s", compra.getId(), urlRetornoPayPal);
         }
     };
 
-    public abstract String gerarUrlPagamento(UUID idCompra, String urlRetorno);
+    public abstract String criaUrlRetorno(Compra compra, UriComponentsBuilder uriComponentsBuilder);
 
     public static GatewayPagamento fromString(String value) {
         return Arrays.stream(values())

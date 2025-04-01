@@ -8,9 +8,9 @@ import jakarta.validation.constraints.Positive;
 
 public class NovaCompraRequest {
 
-    @NotNull private Long idProduto;
-    @NotNull @Positive private Integer quantidade;
-    private GatewayPagamento gatewayPagamento;
+    @NotNull private final Long idProduto;
+    @NotNull @Positive private final Integer quantidade;
+    private final GatewayPagamento gatewayPagamento;
 
     public NovaCompraRequest(Long idProduto, Integer quantidade, String gatewayPagamento) {
         this.idProduto = idProduto;
@@ -18,20 +18,15 @@ public class NovaCompraRequest {
         this.gatewayPagamento = GatewayPagamento.fromString(gatewayPagamento); // Conversão personalizada
     }
 
-    public Compra toModel(EntityManager manager, Usuario comprador) throws Exception {
-        Produto produto = manager.find(Produto.class, this.idProduto);
-        if (produto == null) {
-            throw new IllegalArgumentException("Produto nao encontrado");
-        }
+    public Long getIdProduto() {
+        return idProduto;
+    }
 
-        produto.confereEstoque(this.quantidade);
+    public Integer getQuantidade() {
+        return quantidade;
+    }
 
-        System.out.println("Gerando compra para o produto: " + produto.getNome());
-        Compra compra = new Compra(
-                this.gatewayPagamento,
-                produto,
-                this.quantidade,
-                comprador);
-        return compra;
+    public GatewayPagamento getGatewayPagamento() {
+        return gatewayPagamento;
     }
 }
