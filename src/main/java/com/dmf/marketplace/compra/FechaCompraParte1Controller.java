@@ -6,14 +6,16 @@ import com.dmf.marketplace.produto.Produto;
 import com.dmf.marketplace.usuario.Usuario;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("compra")
@@ -28,7 +30,7 @@ public class FechaCompraParte1Controller {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<String> criar(
+    public ResponseEntity<Map<String, String>> criar(
             //1
             @RequestBody @Valid NovaCompraRequest request,
             //1
@@ -60,7 +62,17 @@ public class FechaCompraParte1Controller {
 
             emails.novaCompra(compra);
 
-            return ResponseEntity.ok(compra.urlRedirecionamento(uriComponentsBuilder));
+            Map<String, String> jsonRetorno = Map.of(
+                    "id", compra.getId().toString(),
+                    "status", compra.getStatus().name(),
+                    "gatewayPagamento", compra.getGatewayPagamento().name(),
+                    "produto", compra.getProduto().getNome(),
+                    "quantidade", String.valueOf(compra.getQuantidade()),
+                    "comprador", compra.getComprador().getLogin(),
+                    "urlRedirecionamento", compra.urlRedirecionamento(uriComponentsBuilder)
+            );
+
+            return ResponseEntity.ok(jsonRetorno);
         }
 
         BindException problemaComEstoque = new BindException(request, "novaCompraRequest");

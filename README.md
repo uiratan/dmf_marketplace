@@ -12,7 +12,7 @@
 
 ## Resultado esperado
 * O usuário precisa estar criado no sistema
-* O cliente que fez a requisição precisa saber que o usuário foi criado. Apenas um retorno com status 200 está suficente.
+* O cliente que fez a requisição precisa saber que o usuário foi criado. Apenas um retorno com statusRetorno 200 está suficente.
 
 # 2. Não podemos ter dois usuários com o mesmo email.
 ## Necessidades
@@ -32,7 +32,7 @@
 * O nome da categoria precisa ser único
 
 ## Resultado esperado
-* Categoria criada e status 200 retornado pelo endpoint.
+* Categoria criada e statusRetorno 200 retornado pelo endpoint.
 * Caso exista erros de validação, o endpoint deve retornar 400 e o json dos erros.
 
 # 4. Segurança
@@ -181,7 +181,7 @@ Aqui a gente vai permitir o cadastro de um produto por usuário logado.
 * A categoria é obrigatória
 
 ## Resultado esperado
-* Um novo produto criado e status 200 retornado
+* Um novo produto criado e statusRetorno 200 retornado
 * Caso dê erro de validação retorne 400 e o json dos erros
 
 # 6. Usuário logado adiciona imagem no seu produto
@@ -224,7 +224,7 @@ Um usuário logado pode opinar sobre um produto. Claro que o melhor era que isso
 * o produto relacionado é obrigatório
 
 ## Resultado esperado
-* Uma nova opinião é criada e status 200 é retornado
+* Uma nova opinião é criada e statusRetorno 200 é retornado
 * Em caso de erro de validação, retorne 400 e o json com erros.
 
 # 8. Faça uma pergunta ao vendedor(a)
@@ -274,7 +274,7 @@ Aqui a gente vai simular uma integração com um gateway como paypal, pagseguro 
 - A pessoa pode escolher a quantidade de itens daquele produto que ela quer comprar
 - O estoque do produto é abatido
 - Um email é enviado para a pessoa que é dona(o) do produto informando que um usuário realmente disse que queria comprar seu produto.
-- Uma compra é gerada informando o status INICIADA e com as seguintes informações:
+- Uma compra é gerada informando o statusRetorno INICIADA e com as seguintes informações:
   - gateway escolhido para pagamento
   - produto escolhido
   - quantidade
@@ -291,7 +291,7 @@ Aqui a gente vai simular uma integração com um gateway como paypal, pagseguro 
   - Retorne o endereço da seguinte maneira: paypal.com/{idGeradoDaCompra}?redirectUrl={urlRetornoAppPosPagamento}
 - Caso a pessoa escolha o pagseguro o seu endpoint deve gerar o seguinte redirect(302):
     - Retorne o endereço da seguinte maneira: pagseguro.com?returnId={idGeradoDaCompra}&redirectUrl={urlRetornoAppPosPagamento}
-- Caso aconteça alguma restrição retorne um status 400 informando os problemas.
+- Caso aconteça alguma restrição retorne um statusRetorno 400 informando os problemas.
 
 # 12. Finaliza compra - parte 2
 Aqui estamos lidando com o retorno do gateway de pagamento
@@ -300,8 +300,8 @@ Aqui estamos lidando com o retorno do gateway de pagamento
 O meio de pagamento(pagseguro ou paypal) redireciona para a aplicação passando no mínimo 3 argumentos:
 - id da compra no sistema de origem
 - id do pagamento na plataforma escolhida
-- status da compra. 
-  - Para o status vamos assumir os dois básicos(Sucesso, Falha). 
+- statusRetorno da compra. 
+  - Para o statusRetorno vamos assumir os dois básicos(Sucesso, Falha). 
   - Os gateways de pagamento informam isso de maneira distinta.
     - Paypal retorna o número 1 para sucesso e o número 0 para erro.
     - Pagseguro retorna a string SUCESSO ou ERRO.
@@ -326,10 +326,10 @@ O meio de pagamento(pagseguro ou paypal) redireciona para a aplicação passando
    1. enviar um email para o usuário informando que o pagamento falhou com o link para que a pessoa possa tentar de novo.
    
 ## Restriçoes
-- id de compra, id de transação e status são obrigatórios para todas urls de retorno de dentro da aplicação.
+- id de compra, id de transação e statusRetorno são obrigatórios para todas urls de retorno de dentro da aplicação.
 - O id de uma transação que vem de alguma plataforma de pagamento só pode ser processado com sucesso uma vez.
 - A transação da plataforma(qualquer que seja) de id X para uma compra Y só pode ser processada com sucesso uma vez.
-- Uma transação que foi concluída com sucesso não pode ter seu status alterado para qualquer coisa outra coisa.
+- Uma transação que foi concluída com sucesso não pode ter seu statusRetorno alterado para qualquer coisa outra coisa.
 - Não podemos ter duas transações com mesmo id de plataforma externa associada a uma compra.
 
 ## Desafio extra 1
@@ -340,7 +340,7 @@ Temos duas plataformas de pagamento externas neste momento, e se eu te disser qu
    ​
 
 ## Resultado esperado
-- Status 200 dizendo retornando o status do pagamento.
+- Status 200 dizendo retornando o statusRetorno do pagamento.
 - Em caso de erro de validação, retorne 400 e o json com erros.
 
 

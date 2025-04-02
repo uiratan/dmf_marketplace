@@ -1,8 +1,5 @@
 package com.dmf.marketplace.compra;
 
-import com.dmf.marketplace.produto.Produto;
-import com.dmf.marketplace.usuario.Usuario;
-import jakarta.persistence.EntityManager;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 

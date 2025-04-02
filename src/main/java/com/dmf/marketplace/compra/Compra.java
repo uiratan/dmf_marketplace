@@ -4,10 +4,14 @@ import com.dmf.marketplace.produto.Produto;
 import com.dmf.marketplace.usuario.Usuario;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import org.springframework.util.Assert;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -17,6 +21,7 @@ public class Compra {
     @Id
     private UUID id;
 
+    @Enumerated(EnumType.STRING)
     private GatewayPagamento gatewayPagamento;
 
     @JsonBackReference
@@ -32,7 +37,12 @@ public class Compra {
     @JoinColumn(name = "comprador_id")
     private Usuario comprador;
 
+    @Enumerated(EnumType.STRING)
     private StatusCompra status;
+
+    @OneToMany(mappedBy = "compra", cascade = CascadeType.MERGE)
+    private Set<Transacao> transacoes = new HashSet<>();
+
 
     public Compra(
             Produto produto,
@@ -57,6 +67,15 @@ public class Compra {
         return this.gatewayPagamento.criaUrlRetorno(this, uriComponentsBuilder);
     }
 
+    public void adicionaTransacao(@Valid RetornoGatewayPagamento request) {
+        Transacao novaTransacao = request.toTransacao(this);
+        Assert.isTrue(!this.transacoes.contains(novaTransacao), "Esta transação já foi processada: " + novaTransacao.getIdTransacaoGateway());
+
+        boolean containsTransacoesConcluidasComSucesso = this.transacoes.stream().filter(Transacao::concluidaComSucesso).toList().isEmpty();
+        Assert.isTrue(containsTransacoesConcluidasComSucesso, "Já existe uma transação bem-sucedida para esta compra.");
+
+        this.transacoes.add(novaTransacao);
+    }
 
     public UUID getId() {
         return id;
@@ -80,5 +99,18 @@ public class Compra {
 
     public StatusCompra getStatus() {
         return status;
+    }
+
+    @Override
+    public String toString() {
+        return "Compra{" +
+               "id=" + id +
+               ", gatewayPagamento=" + gatewayPagamento +
+               ", produto=" + produto +
+               ", quantidade=" + quantidade +
+               ", comprador=" + comprador +
+               ", status=" + status +
+               ", transacoes=" + transacoes +
+               '}';
     }
 }

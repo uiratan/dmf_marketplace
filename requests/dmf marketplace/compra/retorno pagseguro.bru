@@ -1,0 +1,22 @@
+meta {
+  name: retorno pagseguro
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:8080/retorno-pagseguro/{{idCompraNaOrigem}}
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{auth_token}}
+}
+
+body:json {
+  {
+    "idTransacao": "A2AX",
+    "statusRetorno": "ERRO"
+  }
+}

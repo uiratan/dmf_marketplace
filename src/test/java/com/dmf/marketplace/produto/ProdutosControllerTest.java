@@ -21,8 +21,8 @@ class ProdutosControllerTest extends BaseAuthenticatedControllerTest {
 
     private static final String BASE_URL = "/produtos";
 
-    private Categoria criarCategoria(String nome) {
-        Categoria categoria = new Categoria(nome);
+    private Categoria criarCategoria() {
+        Categoria categoria = new Categoria("Eletrônicos");
         entityManager.persist(categoria);
         return categoria;
     }
@@ -39,7 +39,7 @@ class ProdutosControllerTest extends BaseAuthenticatedControllerTest {
     @DisplayName("Deve criar um produto com sucesso")
     @Transactional
     public void deveCriarProdutoComSucesso() throws Exception {
-        Categoria categoria = criarCategoria("Eletrônicos");
+        Categoria categoria = criarCategoria();
         Set<NovaCaracteristicaProdutoRequest> caracteristicas = criarCaracteristicas();
 
         NovoProdutoRequest request = new NovoProdutoRequest(
@@ -79,7 +79,7 @@ class ProdutosControllerTest extends BaseAuthenticatedControllerTest {
     @DisplayName("Deve retornar erro 400 quando o nome do produto for nulo")
     @Transactional
     public void deveFalharQuandoNomeNulo() throws Exception {
-        Categoria categoria = criarCategoria("Eletrônicos");
+        Categoria categoria = criarCategoria();
         Set<NovaCaracteristicaProdutoRequest> caracteristicas = criarCaracteristicas();
 
         NovoProdutoRequest requestInvalido = new NovoProdutoRequest(
@@ -93,7 +93,7 @@ class ProdutosControllerTest extends BaseAuthenticatedControllerTest {
 
         requestHelper.performPost(BASE_URL, requestInvalido)
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.statusRetorno").value(400))
                 .andExpect(jsonPath("$.error").value("Bad Request"))
                 .andExpect(jsonPath("$.message").value("Erro de validação nos campos informados"))
                 .andExpect(jsonPath("$.timestamp").exists())
