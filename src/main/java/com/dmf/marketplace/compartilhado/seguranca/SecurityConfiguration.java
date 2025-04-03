@@ -58,6 +58,8 @@ public class SecurityConfiguration {
                     auth.requestMatchers("/api/auth/**").permitAll();
                     auth.requestMatchers("/error").permitAll();
                     auth.requestMatchers("/h2-console/**").permitAll();
+                    auth.requestMatchers("/notas-fiscais/**").permitAll();
+                    auth.requestMatchers("/ranking/**").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .addFilterBefore(new JwtAuthenticationFilter(tokenManager, usersService),

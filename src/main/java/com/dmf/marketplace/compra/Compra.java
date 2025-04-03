@@ -11,6 +11,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -69,12 +70,25 @@ public class Compra {
 
     public void adicionaTransacao(@Valid RetornoGatewayPagamento request) {
         Transacao novaTransacao = request.toTransacao(this);
-        Assert.isTrue(!this.transacoes.contains(novaTransacao), "Esta transação já foi processada: " + novaTransacao.getIdTransacaoGateway());
+        Assert.isTrue(!transacaoJaProcessada(novaTransacao), "Esta transação já foi processada: " + novaTransacao.getIdTransacaoGateway());
 
-        boolean containsTransacoesConcluidasComSucesso = this.transacoes.stream().filter(Transacao::concluidaComSucesso).toList().isEmpty();
-        Assert.isTrue(containsTransacoesConcluidasComSucesso, "Já existe uma transação bem-sucedida para esta compra.");
+        Assert.isTrue(!processadaComSucesso(), "Já existe uma transação bem-sucedida para esta compra.");
 
         this.transacoes.add(novaTransacao);
+    }
+
+    private boolean transacaoJaProcessada(Transacao novaTransacao) {
+        return this.transacoes.contains(novaTransacao);
+    }
+
+    boolean processadaComSucesso() {
+        return !transacoesConcluidasComSucesso().isEmpty();
+    }
+
+    private List<Transacao> transacoesConcluidasComSucesso() {
+        List<Transacao> transacoesConcluidasComSucesso = this.transacoes.stream().filter(Transacao::concluidaComSucesso).toList();
+        Assert.isTrue(transacoesConcluidasComSucesso.size() <= 1, "Mais de uma transação bem-sucedida para esta compra.");
+        return transacoesConcluidasComSucesso;
     }
 
     public UUID getId() {

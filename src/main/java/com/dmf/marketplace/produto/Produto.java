@@ -186,8 +186,4 @@ public class Produto {
         return false;
 
     }
-
-    public void confereEstoque(@NotNull @Positive Integer quantidade) {
-
-    }
 }
